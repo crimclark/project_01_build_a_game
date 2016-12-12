@@ -7,9 +7,21 @@ HTML/CSS
     - when a div is played back add and remove this ID in short time interval
     - set div:active to brighter color when user clicks it
 
-JS
+JS Gameplay
 
-Gameplay
+set empty array to computer sequence
+set empty array to user input
 
-1. 
+when each button plays in sequence, push color value to sequence array
+when user clicks div, push color value to user array
+
+add eventlistener to container div
+colors.push(event.target.id);
+
+
+if user clicked[i] !== computersequence[i], gameover
+else add 1 to score and make sequence 1 longer
+
+
+
 
