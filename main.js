@@ -46,7 +46,16 @@ var userInput = function(event) {
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
       console.log('u lose');
     }
+    if (userValues.length === colorSequence.length) {
+      if (userValues[currentIndex] === colorSequence[currentIndex]) {
+        console.log('u win');
+      }
+    }
   }
+}
+
+function arraysAreEqual(userValues, colorSequence) {
+
 }
 
 var flash = function($color, color){
@@ -72,15 +81,6 @@ var startSequence = function() {
   }, 500);
 }
 
-// var intervalId = null;
-
-// var startSequence = function() {
-//   intervalId = setInterval(randomSequence, 500);
-// }
-
-$gameBoard.addEventListener('click', userInput);
-$startBtn.addEventListener('click', startSequence)
-
 // return random color value from colors array
 var getRandomColor = function() {
     var randomIndex = Math.floor(Math.random() * colors.length);
@@ -89,15 +89,9 @@ var getRandomColor = function() {
 }
 
 
-// var colors = ["red","yellow","blue", "green", "purple"]; //Sets Colors
-// var target = document.getElementById("test"); //Target element
-// var currentColor = 0;
-// var time = 1500;//Time between color changes (in ms)
-// setInterval(function(){
-//     if( currentColor === colors.length) currentColor = 0;
-//     target.style.color = colors[currentColor];
-//     currentColor++;
-// },time);
+$gameBoard.addEventListener('click', userInput);
+$startBtn.addEventListener('click', startSequence)
+
 
 
 
