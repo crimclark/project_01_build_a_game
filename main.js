@@ -5,26 +5,35 @@ var $blue = document.querySelector('.blue');
 var $yellow = document.querySelector('.yellow');
 var $green = document.querySelector('.green');
 
+
 var $startBtn = document.querySelector('#start');
 var $quitBtn = document.querySelector('#quit');
 
-var colors = ['green', 'red', 'yellow', 'blue'];
+// var colors2 = ['green', 'red', 'yellow', 'blue'];
 
-var red = {
-  flashClass: 'red-flash'
-}
+var colors = [
+  {
+    $color: $red,
+    color: 'red',
+    flashClass: 'red-flash'
+  },
+  {
+    $color: $blue,
+    color: 'blue',
+    flashClass: 'blue-flash'
+  },
+  {
+    $color: $yellow,
+    color: 'yellow',
+    flashClass: 'yellow-flash'
+  },
+  {
+    $color: $green,
+    color: 'green',
+    flashClass: 'green-flash'
+  }
+]
 
-var blue = {
-  flashClass: 'blue-flash'
-}
-
-var yellow = {
-  flashClass: 'yellow-flash'
-}
-
-var green = {
-  flashClass: 'green-flash'
-}
 
 
 var userValues = [];
@@ -47,32 +56,45 @@ var flash = function($color, color){
       $color.classList.remove(color.flashClass);
     }, 100);
   }
+  // clearTimeout(intervalId2);
 }
+
+var i = 0;
 
 var sequence = function() {
-  flash($blue, blue);
-  flash($red, red);
-  flash($green, green);
-  flash($yellow, yellow);
+  flash(colors[i].$color, colors[i]);
+  if (i < colors.length - 1) {
+    i++;
+  } else {
+    clearTimeout(intervalId)
+  }
 }
 
+var intervalId = null;
 
 var startSequence = function() {
-  var intervalId = setInterval(sequence, 500);
+  intervalId = setInterval(sequence, 500);
 }
 
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence)
 
 // return random color value from colors array
-function getRandomColor() {
+var getRandomColor = function() {
   var randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 }
 
 
-
-
+// var colors = ["red","yellow","blue", "green", "purple"]; //Sets Colors
+// var target = document.getElementById("test"); //Target element
+// var currentColor = 0;
+// var time = 1500;//Time between color changes (in ms)
+// setInterval(function(){
+//     if( currentColor === colors.length) currentColor = 0;
+//     target.style.color = colors[currentColor];
+//     currentColor++;
+// },time);
 
 
 

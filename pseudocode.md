@@ -12,6 +12,8 @@ JS Gameplay
 set empty array to computer sequence
 set empty array to user input
 
+
+
 when each button plays in sequence, push color value to sequence array
 when user clicks div, push color value to user array
 
