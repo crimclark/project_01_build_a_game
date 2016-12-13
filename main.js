@@ -9,8 +9,6 @@ var $green = document.querySelector('.green');
 var $startBtn = document.querySelector('#start');
 // var $quitBtn = document.querySelector('#quit');
 
-// var colors2 = ['green', 'red', 'yellow', 'blue'];
-
 var colors = [
   {
     $color: $red,
@@ -43,7 +41,11 @@ var sequenceLength = 4; //store sequence length in variable. increase by 1 for e
 var userInput = function(event) {
   if (event.target.className) { // prevents selecting space outside of color
     userValues.push(event.target.className);
-    console.log(userValues);
+    var currentIndex = userValues.length - 1;
+    console.log(currentIndex);
+    if (userValues[currentIndex] !== colorSequence[currentIndex]) {
+      console.log('u lose');
+    }
   }
 }
 
@@ -54,7 +56,6 @@ var flash = function($color, color){
       $color.classList.remove(color.flashClass);
     }, 100);
   }
-  // clearTimeout(intervalId2);
 }
 
 var startSequence = function() {
@@ -63,10 +64,11 @@ var startSequence = function() {
     var randomColor = getRandomColor();
     flash(randomColor.$color, randomColor);
     i++;
+    colorSequence.push(randomColor.color); //pushes sequence to array
+    // console.log(colorSequence);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
     }
-    console.log(i);
   }, 500);
 }
 
