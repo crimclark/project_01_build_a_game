@@ -7,6 +7,8 @@ var $green = document.querySelector('.green');
 var $score = document.querySelector('#score');
 var $startBtn = document.querySelector('#start');
 var winLoseMessage = document.querySelector('#win-lose');
+var speed = 500;
+
 var colors = [
   {
     $color: $red,
@@ -51,13 +53,15 @@ var userInput = function(event) {
       if (userValues[currentIndex] === colorSequence[currentIndex]) { //if last values are equal
         console.log('u win');
         $score.innerHTML = sequenceLength;
-        if ($score.innerHTML === '3') {
+        if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
           $startBtn.innerHTML = 'RETRY';
           // clearGame();
           return;
         }
         sequenceLength += 1;
+        speed -= 20; //sequence gets 20ms faster every turn
+        console.log(speed);
         startSequence();
       }
     }
@@ -86,7 +90,7 @@ var startSequence = function() {
     if (i === sequenceLength) {
       clearTimeout(intervalId);
     }
-  }, 500);
+  }, speed);
 }
 
 // return random color value from colors array
