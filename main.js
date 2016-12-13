@@ -6,7 +6,7 @@ var $yellow = document.querySelector('.yellow');
 var $green = document.querySelector('.green');
 var $score = document.querySelector('#score');
 var $startBtn = document.querySelector('#start');
-
+var winLoseMessage = document.querySelector('#win-lose');
 var colors = [
   {
     $color: $red,
@@ -43,7 +43,8 @@ var userInput = function(event) {
     console.log(currentIndex);
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
       console.log('u lose');
-      sequenceLength = 1;
+      winLoseMessage.innerHTML = 'You Lose!';
+      $startBtn.innerHTML = 'RETRY';
       return false;
     }
     if (userValues.length === colorSequence.length) { // if arrays are the same length
@@ -51,7 +52,9 @@ var userInput = function(event) {
         console.log('u win');
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '3') {
-          console.log('we have a winner');
+          winLoseMessage.innerHTML = 'You win!';
+          $startBtn.innerHTML = 'RETRY';
+          // clearGame();
           return;
         }
         sequenceLength += 1;
@@ -71,6 +74,8 @@ var flash = function($color, color){
 }
 
 var startSequence = function() {
+  // clearGame();
+  // winLoseMessage.innerHTML = '';
   var i = 0;
   intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
@@ -91,8 +96,22 @@ var getRandomColor = function() {
    // console.log(colors[randomIndex]);
 }
 
+function clearGame() {
+  sequenceLength = 1;
+  userValues = [];
+  colorSequence = [];
+  winLoseMessage.innerHTML = '';
+  $score.innerHTML = '';
+  $startBtn.innerHTML = 'START';
+  return;
+}
+
 $gameBoard.addEventListener('click', userInput);
-$startBtn.addEventListener('click', startSequence)
+$startBtn.addEventListener('click', startSequence);
+$startBtn.addEventListener('click', clearGame);
+
+
+
 
 
 
