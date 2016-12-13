@@ -7,7 +7,7 @@ var $green = document.querySelector('.green');
 
 
 var $startBtn = document.querySelector('#start');
-var $quitBtn = document.querySelector('#quit');
+// var $quitBtn = document.querySelector('#quit');
 
 // var colors2 = ['green', 'red', 'yellow', 'blue'];
 
@@ -34,12 +34,10 @@ var colors = [
   }
 ]
 
-
-
 var userValues = [];
 var colorSequence = [];
 
-var sequenceLength = 1; //store sequence length in variable. increase by 1 for each level
+var sequenceLength = 4; //store sequence length in variable. increase by 1 for each level
 
 //push user click to userValues array
 var userInput = function(event) {
@@ -61,19 +59,15 @@ var flash = function($color, color){
 
 var i = 0;
 
-var sequence = function() {
-  flash(colors[i].$color, colors[i]);
-  if (i < colors.length - 1) {
-    i++;
-  } else {
-    clearTimeout(intervalId)
-  }
+var randomSequence = function() {
+    var randomColor = getRandomColor();
+    flash(randomColor.$color, randomColor);
 }
 
-var intervalId = null;
+// var intervalId = null;
 
 var startSequence = function() {
-  intervalId = setInterval(sequence, 500);
+  intervalId = setInterval(randomSequence, 500);
 }
 
 $gameBoard.addEventListener('click', userInput);
@@ -81,8 +75,9 @@ $startBtn.addEventListener('click', startSequence)
 
 // return random color value from colors array
 var getRandomColor = function() {
-  var randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
+    var randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+   // console.log(colors[randomIndex]);
 }
 
 
