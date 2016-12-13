@@ -5,9 +5,7 @@ var $blue = document.querySelector('.blue');
 var $yellow = document.querySelector('.yellow');
 var $green = document.querySelector('.green');
 var $score = document.querySelector('#score');
-
 var $startBtn = document.querySelector('#start');
-// var $quitBtn = document.querySelector('#quit');
 
 var colors = [
   {
@@ -45,12 +43,15 @@ var userInput = function(event) {
     console.log(currentIndex);
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
       console.log('u lose');
+      sequenceLength = 1;
+      return false;
     }
-    if (userValues.length === colorSequence.length) {
-      if (userValues[currentIndex] === colorSequence[currentIndex]) {
+    if (userValues.length === colorSequence.length) { // if arrays are the same length
+      if (userValues[currentIndex] === colorSequence[currentIndex]) { //if last values are equal
         console.log('u win');
         $score.innerHTML = sequenceLength;
         sequenceLength += 1;
+        startSequence();
       }
     }
   }
@@ -85,7 +86,6 @@ var getRandomColor = function() {
     return colors[randomIndex];
    // console.log(colors[randomIndex]);
 }
-
 
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence)

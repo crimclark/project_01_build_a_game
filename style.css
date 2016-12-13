@@ -1,24 +1,41 @@
-#container {
-  width: 210px;
-/*  height: 200px;*/
+body {
+  font-family: sans-serif;
 }
 
 div {
   display: inline-block;
+}
 
+#start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 10%;
+  width:10%;
+/*  margin: auto;*/
+margin: -5% 0 0 -15%;
+}
+
+#container {
+  width: 500px;
+/*  height: 200px;*/
+  display: block;
+  margin: 0 auto;
+  position:relative;
+/*  vertical-align: middle;*/
 }
 
 .green {
   background-color: #56be56;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 100% 0 0 0;
 }
 
 .green-flash {
   background-color: #1ae031;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 100% 0 0 0;
 }
 
@@ -28,8 +45,8 @@ div {
 
 .red {
   background-color: #8e4040;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 100% 0 0;
 }
 
@@ -39,22 +56,22 @@ div {
 
 .red-flash {
   background-color:#ed1e1e;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 100% 0 0;
 }
 
 .blue {
   background-color: #304483;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 0 100% 0;
 }
 
 .blue-flash {
   background-color: #215cf2;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 0 100% 0;
 }
 
@@ -64,15 +81,15 @@ div {
 
 .yellow {
   background-color: #bbbb5b;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 0 0 100%;
 }
 
 .yellow-flash {
   background-color: #f2ea0c;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 0 0 0 100%;
 }
 
