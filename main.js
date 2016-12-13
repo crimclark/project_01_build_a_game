@@ -50,6 +50,10 @@ var userInput = function(event) {
       if (userValues[currentIndex] === colorSequence[currentIndex]) { //if last values are equal
         console.log('u win');
         $score.innerHTML = sequenceLength;
+        if ($score.innerHTML === '3') {
+          console.log('we have a winner');
+          return;
+        }
         sequenceLength += 1;
         startSequence();
       }
