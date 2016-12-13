@@ -4,7 +4,7 @@ var $red = document.querySelector('.red');
 var $blue = document.querySelector('.blue');
 var $yellow = document.querySelector('.yellow');
 var $green = document.querySelector('.green');
-
+var $score = document.querySelector('#score');
 
 var $startBtn = document.querySelector('#start');
 // var $quitBtn = document.querySelector('#quit');
@@ -35,7 +35,7 @@ var colors = [
 var userValues = [];
 var colorSequence = [];
 
-var sequenceLength = 4; //store sequence length in variable. increase by 1 for each level
+var sequenceLength = 1; //store sequence length in variable. increase by 1 for each level
 
 //push user click to userValues array
 var userInput = function(event) {
@@ -49,13 +49,11 @@ var userInput = function(event) {
     if (userValues.length === colorSequence.length) {
       if (userValues[currentIndex] === colorSequence[currentIndex]) {
         console.log('u win');
+        $score.innerHTML = sequenceLength;
+        sequenceLength += 1;
       }
     }
   }
-}
-
-function arraysAreEqual(userValues, colorSequence) {
-
 }
 
 var flash = function($color, color){
