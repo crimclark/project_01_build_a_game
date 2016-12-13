@@ -8,6 +8,7 @@ var $score = document.querySelector('#score');
 var $startBtn = document.querySelector('#start');
 var winLoseMessage = document.querySelector('#win-lose');
 var speed = 500;
+var gameActive = null;
 
 var colors = [
   {
@@ -39,7 +40,7 @@ var sequenceLength = 1; //store sequence length in variable. increase by 1 for e
 
 //push user click to userValues array
 var userInput = function(event) {
-  if (event.target.className) { // prevents selecting space outside of color
+  if (event.target.className && gameActive) { // prevents selecting space outside of color and ensures user has clicked start
     userValues.push(event.target.className);
     var currentIndex = userValues.length - 1;
     console.log(currentIndex);
@@ -78,6 +79,7 @@ var flash = function($color, color){
 }
 
 var startSequence = function() {
+  gameActive = true;
   // clearGame();
   // winLoseMessage.innerHTML = '';
   var i = 0;
