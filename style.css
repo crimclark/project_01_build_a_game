@@ -1,10 +1,12 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Ubuntu', sans-serif;
+  background-color:#d1d1d1;
 }
 
 #score-position {
   margin-top: 5%;
   margin-left: 25%;
+  font-size: 1.5em;
 }
 
 #win-lose {

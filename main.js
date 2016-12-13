@@ -1,5 +1,4 @@
 var $gameBoard = document.querySelector('#container');
-
 var $red = document.querySelector('.red');
 var $blue = document.querySelector('.blue');
 var $yellow = document.querySelector('.yellow');
