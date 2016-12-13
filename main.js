@@ -57,18 +57,24 @@ var flash = function($color, color){
   // clearTimeout(intervalId2);
 }
 
-var i = 0;
-
-var randomSequence = function() {
+var startSequence = function() {
+  var i = 0;
+  intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
     flash(randomColor.$color, randomColor);
+    i++;
+    if (i === sequenceLength) {
+      clearTimeout(intervalId);
+    }
+    console.log(i);
+  }, 500);
 }
 
 // var intervalId = null;
 
-var startSequence = function() {
-  intervalId = setInterval(randomSequence, 500);
-}
+// var startSequence = function() {
+//   intervalId = setInterval(randomSequence, 500);
+// }
 
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence)
