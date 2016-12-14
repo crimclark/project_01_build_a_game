@@ -9,6 +9,8 @@ var winLoseMessage = document.querySelector('#win-lose');
 var speed = 500;
 var gameActive = null;
 
+var lastSequence = [];
+
 var colors = [
   {
     $color: $red,
@@ -42,16 +44,16 @@ var userInput = function(event) {
   if (event.target.className && gameActive) { // prevents selecting space outside of color and ensures user has clicked start
     userValues.push(event.target.className);
     var currentIndex = userValues.length - 1;
-    console.log(currentIndex);
+    // console.log(currentIndex);
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
-      console.log('u lose');
+      // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
       $startBtn.innerHTML = 'RETRY';
       return false;
     }
     if (userValues.length === colorSequence.length) { // if arrays are the same length
       if (userValues[currentIndex] === colorSequence[currentIndex]) { //if last values are equal
-        console.log('u win');
+        // console.log('u win');
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
@@ -59,9 +61,12 @@ var userInput = function(event) {
           return;
         }
         sequenceLength += 1;
+        colorSequence = [];
+        lastSequence = [];
+        userValues = [];
         speed -= 20; //sequence gets 20ms faster every turn
-        console.log(speed);
-        var delayTurn = setTimeout(startSequence(), 100000);
+        // console.log(speed);
+        startSequence();
       }
     }
   }
@@ -102,7 +107,8 @@ var startSequence = function() {
       flash(randomColor.$color, randomColor);
       i++;
       colorSequence.push(randomColor.color); //pushes sequence to array
-      // console.log(colorSequence);
+      lastSequence.push(randomColor); //pushes object to store last sequence
+      console.log(lastSequence);
       if (i === sequenceLength) {
         clearTimeout(intervalId);
       }
@@ -142,6 +148,7 @@ function sounds(event) {
   }
 }
 
+
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
@@ -162,7 +169,6 @@ function play (pitch, duration) {
   oscillator.start(startTime);
   oscillator.stop(endTime + 5);
 }
-
 
 
 
