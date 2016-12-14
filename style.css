@@ -1,6 +1,7 @@
 body {
   font-family: 'Ubuntu', sans-serif;
-  background-color:#ffe7d1;
+  background-color:black;
+  color:white;
 }
 
 #score-position {
@@ -18,7 +19,6 @@ body {
 
 div {
   display: inline-block;
-
 }
 
 #start {

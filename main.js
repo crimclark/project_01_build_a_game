@@ -142,7 +142,6 @@ function sounds(event) {
   }
 }
 
-
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
@@ -150,16 +149,12 @@ $startBtn.addEventListener('click', clearGame);
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-
 function play (pitch, duration) {
   var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator()
   gainNode.gain.value = .1;
-  // oscillator.type = 'sawtooth';
   oscillator.connect(gainNode);
-
   gainNode.connect(audioContext.destination)
-  // gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + .3);
   oscillator.frequency.value = pitch
   var startTime = audioContext.currentTime
   var endTime = startTime + duration
