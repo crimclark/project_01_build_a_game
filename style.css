@@ -1,6 +1,6 @@
 body {
   font-family: 'Ubuntu', sans-serif;
-  background-color:#d1d1d1;
+  background-color:#ffe7d1;
 }
 
 #score-position {
@@ -13,6 +13,7 @@ body {
   width: 5em;
   margin: 0 auto;
   margin-top: 3%;
+  font-size: 1.8em;
 }
 
 div {
@@ -34,11 +35,12 @@ div {
   background-color:white;
   border: none;
   cursor: pointer;
+  color:#4e0c68;
 }
 
 #start:hover {
   color:white;
-  background-color:black;
+  background-color:#4e0c68;
 }
 
 #start:active {

@@ -56,7 +56,6 @@ var userInput = function(event) {
         if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
           $startBtn.innerHTML = 'RETRY';
-          // clearGame();
           return;
         }
         sequenceLength += 1;
@@ -108,14 +107,15 @@ function clearGame() {
   winLoseMessage.innerHTML = '';
   $score.innerHTML = '';
   $startBtn.innerHTML = 'START';
+  speed = 500;
   return;
 }
+
+
 
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
 $startBtn.addEventListener('click', clearGame);
-
-
 
 
 
