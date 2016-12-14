@@ -128,16 +128,16 @@ function clearGame() {
 
 function sounds(event) {
   if (event.target.classList.contains('red')) {
-    play(220, .2);
+    play(220, .3);
   }
   if (event.target.classList.contains('yellow')) {
-    play(138.59, .2);
+    play(138.59, .3);
   }
   if (event.target.classList.contains('green')) {
-    play(164.81, .2);
+    play(164.81, .3);
   }
   if (event.target.classList.contains('blue')) {
-    play(110, .2);
+    play(110, .3);
   }
 }
 
@@ -153,14 +153,18 @@ var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 function play (pitch, duration) {
   var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator()
+  gainNode.gain.value = .1;
+  // oscillator.type = 'sawtooth';
   oscillator.connect(gainNode);
+
   gainNode.connect(audioContext.destination)
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + .2);
+  // gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + .3);
   oscillator.frequency.value = pitch
   var startTime = audioContext.currentTime
   var endTime = startTime + duration
+  gainNode.gain.setTargetAtTime(0, endTime, .7)
   oscillator.start(startTime);
-  oscillator.stop(endTime);
+  oscillator.stop(endTime + 5);
 }
 
 
