@@ -8,6 +8,7 @@ var $startBtn = document.querySelector('#start');
 var winLoseMessage = document.querySelector('#win-lose');
 var speed = 500;
 var gameActive = null;
+var $playback = document.querySelector('#playback');
 
 var lastSequence = [];
 
@@ -148,11 +149,23 @@ function sounds(event) {
   }
 }
 
+function playBack(event) {
+  var i = 0;
+  var playBackInterval = setInterval(function playBackSequence() {
+    flash(lastSequence[i].$color, lastSequence[i]);
+    i++;
+    if (i >= lastSequence.length) {
+      clearInterval(playBackInterval);
+    }
+  }, speed)
+  console.log(i);
+}
 
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
 $startBtn.addEventListener('click', clearGame);
+$playback.addEventListener('click', playBack);
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
