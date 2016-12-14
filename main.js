@@ -61,7 +61,7 @@ var userInput = function(event) {
         sequenceLength += 1;
         speed -= 20; //sequence gets 20ms faster every turn
         console.log(speed);
-        startSequence();
+        var delayTurn = setTimeout(startSequence(), 100000);
       }
     }
   }
@@ -92,22 +92,23 @@ var flash = function($color, color){
 }
 
 var startSequence = function() {
-  gameActive = true;
-  // clearGame();
-  // winLoseMessage.innerHTML = '';
-  var i = 0;
-  intervalId = setInterval(function randomSequence() {
-    var randomColor = getRandomColor();
-    flash(randomColor.$color, randomColor);
-    i++;
-    colorSequence.push(randomColor.color); //pushes sequence to array
-    // console.log(colorSequence);
-    if (i === sequenceLength) {
-      clearTimeout(intervalId);
-    }
-  }, speed);
+  var turnDelay = setTimeout(function playSequence() { // pause after each turn
+    gameActive = true;
+    // clearGame();
+    // winLoseMessage.innerHTML = '';
+    var i = 0;
+    intervalId = setInterval(function randomSequence() {
+      var randomColor = getRandomColor();
+      flash(randomColor.$color, randomColor);
+      i++;
+      colorSequence.push(randomColor.color); //pushes sequence to array
+      // console.log(colorSequence);
+      if (i === sequenceLength) {
+        clearTimeout(intervalId);
+      }
+    }, speed);
+  }, 1000)
 }
-
 // return random color value from colors array
 var getRandomColor = function() {
     var randomIndex = Math.floor(Math.random() * colors.length);
@@ -162,11 +163,10 @@ function play (pitch, duration) {
   oscillator.frequency.value = pitch
   var startTime = audioContext.currentTime
   var endTime = startTime + duration
-  gainNode.gain.setTargetAtTime(0, endTime, .7)
+  gainNode.gain.setTargetAtTime(0, endTime, .5)
   oscillator.start(startTime);
   oscillator.stop(endTime + 5);
 }
-
 
 
 
