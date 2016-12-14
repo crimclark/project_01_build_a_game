@@ -117,7 +117,30 @@ $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
 $startBtn.addEventListener('click', clearGame);
 
+var audioContext = new AudioContext()
 
+play(200, 0.25)
+// play(1, 300, 0.5)
+// play(2, 500, 0.5)
+
+function play (pitch, duration) {
+  var oscillator = audioContext.createOscillator()
+  oscillator.connect(audioContext.destination)
+  oscillator.frequency.value = pitch
+  var startTime = audioContext.currentTime
+  var endTime = startTime + duration
+  oscillator.start(startTime);
+  oscillator.stop(endTime);
+}
+
+
+
+// var audioContext = new AudioContext();
+
+// var oscillator = audioContext.createOscillator();
+
+// oscillator.start(audioContext.currentTime);
+// oscillator.stop(audioContext.currentTime + 2);
 
 
 
