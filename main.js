@@ -150,11 +150,12 @@ $startBtn.addEventListener('click', clearGame);
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 
-
-
 function play (pitch, duration) {
+  var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator()
-  oscillator.connect(audioContext.destination)
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination)
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + .2);
   oscillator.frequency.value = pitch
   var startTime = audioContext.currentTime
   var endTime = startTime + duration
