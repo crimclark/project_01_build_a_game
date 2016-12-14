@@ -69,6 +69,21 @@ var userInput = function(event) {
 
 var flash = function($color, color){
   $color.classList.add(color.flashClass);
+
+  if (color.flashClass === 'red-flash') {
+    play(220, .2);
+  }
+  if (color.flashClass === 'yellow-flash') {
+    play(138.59, .2);
+  }
+  if (color.flashClass === 'green-flash') {
+    play(164.81, .2);
+  }
+  if (color.flashClass === 'blue-flash') {
+    play(110, .2);
+  }
+
+
   if($color.classList.contains(color.flashClass)) {
     var intervalId2 = setTimeout(function flashOff() {
       $color.classList.remove(color.flashClass);
@@ -111,17 +126,31 @@ function clearGame() {
   return;
 }
 
+function sounds(event) {
+  if (event.target.classList.contains('red')) {
+    play(220, .2);
+  }
+  if (event.target.classList.contains('yellow')) {
+    play(138.59, .2);
+  }
+  if (event.target.classList.contains('green')) {
+    play(164.81, .2);
+  }
+  if (event.target.classList.contains('blue')) {
+    play(110, .2);
+  }
+}
 
 
+$gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
 $startBtn.addEventListener('click', clearGame);
 
-var audioContext = new AudioContext()
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-play(200, 0.25)
-// play(1, 300, 0.5)
-// play(2, 500, 0.5)
+
+
 
 function play (pitch, duration) {
   var oscillator = audioContext.createOscillator()
@@ -132,17 +161,6 @@ function play (pitch, duration) {
   oscillator.start(startTime);
   oscillator.stop(endTime);
 }
-
-
-
-// var audioContext = new AudioContext();
-
-// var oscillator = audioContext.createOscillator();
-
-// oscillator.start(audioContext.currentTime);
-// oscillator.stop(audioContext.currentTime + 2);
-
-
 
 
 
