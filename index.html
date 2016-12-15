@@ -6,7 +6,10 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 </head>
 <body>
-  <p id="score-position">Score: <span id="score"></span></p>
+  <div class="top">
+    <p id="score-position">Score: <span id="score"></span>
+    <button id='playback'>PLAYBACK &#9654;</button></p>
+  </div>
   <div id="container">
     <div class="green"></div>
     <div class="red"></div>
@@ -15,10 +18,9 @@
     <button id="start">START</button>
 
   </div>
-  <div class='playback-div'>
-    <button id='playback'>PLAYBACK &#9654;</button>
+
     <p id="win-lose"></p>
-  </div>
+
   <script src="main.js"></script>
 </body>
 </html>

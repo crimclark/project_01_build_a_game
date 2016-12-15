@@ -95,7 +95,7 @@ var flash = function($color, color){
   if($color.classList.contains(color.flashClass)) {
     var intervalId2 = setTimeout(function flashOff() {
       $color.classList.remove(color.flashClass);
-    }, 100);
+    }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
 }

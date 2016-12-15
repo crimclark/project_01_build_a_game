@@ -5,8 +5,6 @@ body {
 }
 
 #score-position {
-  margin-top: 5%;
-  margin-left: 25%;
   font-size: 1.5em;
 }
 
@@ -24,37 +22,13 @@ body {
 
 button {
   font-weight: bold;
-  font-size: .8em;
   border: 1px solid black;
   cursor: pointer;
+  margin-top: 2px;
+  font-size:.8em;
 }
 
-.playback-div {
-  width: 100%;
-  overflow: hidden;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-}
 
-#playback {
-  display: inline-block;
-  margin: 0 auto;
-  margin: 20px 40% 0 40%;
-  color: red;
-  background-color:white;
-/*  height: 100%;*/
-}
-
-#playback:hover {
-  background-color: red;
-  color: white;
-}
-
-#playback:active {
-  background-color: white;
-  color: white;
-}
 
 #start {
   position: absolute;
@@ -98,6 +72,7 @@ button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+/*  z-index: -1;*/
 }
 
 .green {
@@ -174,4 +149,40 @@ button {
 
 .yellow:active {
   background-color:#f2ea0c;
+}
+
+.playback-div {
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.top {
+  margin: 0 auto;
+  width: 33%;
+  margin-top: 2%;
+}
+
+#playback {
+/*  display: inline-block;
+  margin: 0 auto;*/
+/*vertical-align: right;*/
+/*  margin: 20px 40% 0 40%;*/
+  font-size: .6em;
+  float: right;
+  color: red;
+  background-color:white;
+/*  height: 100%;*/
+}
+
+#playback:hover {
+  background-color: red;
+  color: white;
+}
+
+#playback:active {
+  background-color: white;
+  color: white;
 }
