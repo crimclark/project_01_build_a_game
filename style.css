@@ -94,6 +94,10 @@ button {
   transform: rotate(45deg);
 /*  vertical-align: middle;*/
   cursor: pointer;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .green {
