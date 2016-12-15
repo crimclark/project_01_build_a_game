@@ -29,13 +29,13 @@ button {
   cursor: pointer;
 }
 
-/*.playback-div {
+.playback-div {
   width: 100%;
   overflow: hidden;
   display: block;
   text-align: center;
   margin: 0 auto;
-}*/
+}
 
 #playback {
   display: inline-block;
