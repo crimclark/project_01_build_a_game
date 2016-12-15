@@ -13,17 +13,50 @@ body {
 #win-lose {
   width: 5em;
   margin: 0 auto;
-  margin-top: 3%;
   font-size: 1.8em;
+  margin-top:10px;
+  text-align: center;
 }
 
 div {
   display: inline-block;
 }
 
-#start {
+button {
   font-weight: bold;
   font-size: .8em;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.playback-div {
+  width: 100%;
+  overflow: hidden;
+  display: block;
+/*text-align: center;
+*/margin: 0 auto;
+}
+
+#playback {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  color: black;
+  background-color:white;
+  height: 100%;
+}
+
+#playback:hover {
+  background-color: red;
+  color: white;
+}
+
+#playback:active {
+  background-color: white;
+  color: black;
+}
+
+#start {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -32,11 +65,13 @@ div {
 /*  margin: auto;*/
   transform: rotate(-45deg);
   margin: -6% 0 0 -8%;
-  background-color:white;
-  border: none;
-  cursor: pointer;
-  color:#4e0c68;
+  background-color:#3B158D;
+  color:white;
+  box-shadow: inset .5px .5px 3px 3px #1F0657;
 }
+
+/* 2C0B73 */
+/* 1F0657 */
 
 #start:hover {
   color:white;
