@@ -9,7 +9,7 @@ var winLoseMessage = document.querySelector('#win-lose');
 var speed = 500;
 var gameActive = null;
 var $playback = document.querySelector('#playback');
-
+var buzzerTime;
 var lastSequence = [];
 
 var colors = [
@@ -47,9 +47,11 @@ var userInput = function(event) {
     var currentIndex = userValues.length - 1;
     // console.log(currentIndex);
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
+      buzzerTime = setTimeout(buzzer, 200);
       // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
       $startBtn.innerHTML = 'RETRY';
+      gameActive = false;
       return false;
     }
     if (userValues.length === colorSequence.length) { // if arrays are the same length
@@ -135,17 +137,18 @@ function clearGame() {
 }
 
 function sounds(event) {
+  clearTimeout(buzzerTime);
   if (event.target.classList.contains('red')) {
-    play(220, .3);
+    play(220);
   }
   if (event.target.classList.contains('yellow')) {
-    play(138.59, .3);
+    play(138.59);
   }
   if (event.target.classList.contains('green')) {
-    play(164.81, .3);
+    play(164.81);
   }
   if (event.target.classList.contains('blue')) {
-    play(110, .3);
+    play(110);
   }
 }
 
@@ -169,7 +172,7 @@ $playback.addEventListener('click', playBack);
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-function play (pitch, duration) {
+function play (pitch) {
   var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator()
   gainNode.gain.value = .1;
@@ -177,10 +180,25 @@ function play (pitch, duration) {
   gainNode.connect(audioContext.destination)
   oscillator.frequency.value = pitch
   var startTime = audioContext.currentTime
-  var endTime = startTime + duration
+  var endTime = startTime + .3
   gainNode.gain.setTargetAtTime(0, endTime, .5)
   oscillator.start(startTime);
-  oscillator.stop(endTime + 5);
+  oscillator.stop(endTime + 4);
+}
+
+function buzzer() {
+  var gainNode = audioContext.createGain();
+  var oscillator = audioContext.createOscillator();
+  oscillator.frequency.value = 45;
+  oscillator.type = 'square';
+  gainNode.gain.value = .1;
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  var startTime = audioContext.currentTime;
+  var endTime = startTime + .6;
+  gainNode.gain.setTargetAtTime(0, endTime, .01);
+  oscillator.start(startTime);
+  oscillator.stop(endTime + 1);
 }
 
 
