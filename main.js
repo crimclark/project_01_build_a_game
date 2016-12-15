@@ -129,7 +129,7 @@ function clearGame() {
   colorSequence = [];
   winLoseMessage.innerHTML = '';
   $score.innerHTML = '';
-  $startBtn.innerHTML = 'START';
+  $startBtn.innerHTML = 'RESTART';
   speed = 500;
   return;
 }
