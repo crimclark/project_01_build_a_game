@@ -183,7 +183,7 @@ var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 function play (pitch) {
   var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator()
-  gainNode.gain.value = .1;
+  gainNode.gain.value = .5;
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination)
   oscillator.frequency.value = pitch
@@ -199,7 +199,7 @@ function buzzer() {
   var oscillator = audioContext.createOscillator();
   oscillator.frequency.value = 45;
   oscillator.type = 'square';
-  gainNode.gain.value = .1;
+  gainNode.gain.value = .5;
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
   var startTime = audioContext.currentTime;
