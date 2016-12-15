@@ -50,7 +50,7 @@ var userInput = function(event) {
       buzzerTime = setTimeout(buzzer, 200);
       // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
-      $startBtn.innerHTML = 'RETRY';
+      // $startBtn.innerHTML = 'RETRY';
       gameActive = false;
       return false;
     }
