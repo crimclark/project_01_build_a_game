@@ -72,8 +72,8 @@ button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  animation: rotate .75s linear 2, rotate 1.5s ease-out 1;
-  animation-delay:0s, 1.5s;
+  animation: rotate .5s linear 2, rotate 1s ease-out 1;
+  animation-delay:0s, 1s;
 }
 
 .green {
@@ -196,5 +196,7 @@ button {
     transform: rotate(45deg);
   }
 }
+
+
 
 
