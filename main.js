@@ -50,6 +50,7 @@ var userInput = function(event) {
       buzzerTime = setTimeout(buzzer, 200);
       // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
+      $startBtn.addEventListener('click', startSequence);
       // $startBtn.innerHTML = 'RETRY';
       gameActive = false;
       return false;
@@ -97,9 +98,11 @@ var flash = function($color, color){
       $color.classList.remove(color.flashClass);
     }, 100);
   }
+  $startBtn.addEventListener('click', startSequence);
 }
 
 var startSequence = function() {
+  $startBtn.removeEventListener('click', startSequence);
   var turnDelay = setTimeout(function playSequence() { // pause after each turn
     gameActive = true;
     // clearGame();
