@@ -72,7 +72,8 @@ button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-/*  z-index: -1;*/
+  animation: rotate .75s linear 2, rotate 1.5s ease-out 1;
+  animation-delay:0s, 1.5s;
 }
 
 .green {
@@ -186,3 +187,14 @@ button {
   background-color: white;
   color: white;
 }
+
+@keyframes rotate {
+  from {
+    transform: rotate(-315deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+
+
