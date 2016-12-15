@@ -69,7 +69,6 @@ var userInput = function(event) {
         lastSequence = [];
         userValues = [];
         speed -= 20; //sequence gets 20ms faster every turn
-        // console.log(speed);
         startSequence();
       }
     }
@@ -103,25 +102,30 @@ var flash = function($color, color){
 
 var startSequence = function() {
   $startBtn.removeEventListener('click', startSequence);
-  var turnDelay = setTimeout(function playSequence() { // pause after each turn
-    gameActive = true;
-    // clearGame();
-    // winLoseMessage.innerHTML = '';
-    var i = 0;
-    intervalId = setInterval(function randomSequence() {
-      var randomColor = getRandomColor();
-      flash(randomColor.$color, randomColor);
-      i++;
-      colorSequence.push(randomColor.color); //pushes sequence to array
-      lastSequence.push(randomColor); //pushes object to store last sequence
-      console.log(lastSequence);
-      if (i === sequenceLength) {
-        clearTimeout(intervalId);
-      }
-    }, speed);
-  }, 1000)
+  //if 1st sequence, start immediately, else delay next turn by 1 sec
+  if (sequenceLength === 1) {
+    playSequence();
+  } else {
+    var turnDelay = setTimeout(playSequence, 1000);
+  }
 }
-// return random color value from colors array
+
+function playSequence() {
+  gameActive = true;
+  var i = 0;
+  intervalId = setInterval(function randomSequence() {
+    var randomColor = getRandomColor();
+    flash(randomColor.$color, randomColor);
+    i++;
+    colorSequence.push(randomColor.color); //pushes sequence to array
+    lastSequence.push(randomColor); //pushes object to store last sequence
+    console.log(lastSequence);
+    if (i === sequenceLength) {
+      clearTimeout(intervalId);
+    }
+  }, speed);
+}
+
 var getRandomColor = function() {
     var randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
@@ -129,6 +133,7 @@ var getRandomColor = function() {
 }
 
 function clearGame() {
+  lastSequence = [];
   sequenceLength = 1;
   userValues = [];
   colorSequence = [];
@@ -203,6 +208,11 @@ function buzzer() {
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
+
+
+
+
+
 
 
 
