@@ -172,6 +172,24 @@ function playBack(event) {
   console.log(i);
 }
 
+function intro() {
+  speed = 2;
+  var i = 0;
+  var loops = 0;
+  var introSequence = setInterval(function playBackSequence() {
+    flash(colors[i].$color, colors[i]);
+  i++;
+    if (i === colors.length) {
+      i = 0;
+      loops++;
+    }
+    if (loops === 3) {
+      clearInterval(introSequence);
+    }
+  }, 75)
+}
+
+
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
