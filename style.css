@@ -135,12 +135,12 @@ button {
 }
 
 .green-flash {
-  background-color: #1ae031;
+  background-color: #10ff00;
   border-radius: 100% 0 0 0;
 }
 
 .green:active {
-  background-color: #1ae031;
+  background-color: #10ff00;
 }
 
 .red {
@@ -150,11 +150,11 @@ button {
 }
 
 .red:active {
-  background-color:#ed1e1e;
+  background-color:red;
 }
 
 .red-flash {
-  background-color:#ed1e1e;
+  background-color:red;
   border-radius: 0 100% 0 0;
 }
 
@@ -165,12 +165,12 @@ button {
 }
 
 .blue-flash {
-  background-color: #215cf2;
+  background-color: #2b63ff;
   border-radius: 0 0 100% 0;
 }
 
 .blue:active {
-  background-color: #215cf2;
+  background-color: #2b63ff;
 }
 
 .yellow {
@@ -180,12 +180,12 @@ button {
 }
 
 .yellow-flash {
-  background-color: #f2ea0c;
+  background-color: yellow;
   border-radius: 0 0 0 100%;
 }
 
 .yellow:active {
-  background-color:#f2ea0c;
+  background-color:yellow;
 }
 
 /*.playback-div {
