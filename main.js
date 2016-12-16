@@ -72,6 +72,7 @@ var userInput = function(event) {
         userValues = [];
         speed -= 20; //sequence gets 20ms faster every turn
         startSequence();
+        gameActive = false;
       }
     }
   }
@@ -136,7 +137,6 @@ var startSequence = function() {
 }
 
 function playSequence() {
-  gameActive = true;
   var i = 0;
   intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
@@ -147,6 +147,7 @@ function playSequence() {
     console.log(lastSequence);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
+      gameActive = true;
     }
   }, speed);
 }
