@@ -4,7 +4,10 @@ body {
   background-color:black;
   color:white;
   overflow: hidden;
+  transition: background-color 2s;
 }
+
+
 
 #title {
   text-align: center;
