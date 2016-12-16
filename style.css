@@ -1,3 +1,4 @@
+
 body {
   font-family: 'Ubuntu', sans-serif;
   background-color:black;
@@ -9,6 +10,7 @@ body {
   margin: 0 auto;
   left: 5px;
   width: 20%;
+  min-width: 175px;
   padding: 10px;
   border-bottom:3px solid white;
 }
@@ -29,6 +31,15 @@ body {
 .red, .yellow, .green, .blue {
   display: inline-block;
   cursor: pointer;
+  width: 200px;
+  height: 200px;
+}
+
+@media (max-width: 420px) {
+  .red, .yellow, .green, .blue {
+    width: 185px;
+    height: 185px;
+  }
 }
 
 button {
@@ -89,18 +100,32 @@ button {
 /*  animation: fadeIn 3s ease 1;*/
 }
 
+@media (max-width: 420px) {
+  #container {
+    width: 390px;
+  }
+}
+
 .green {
   background-color: #56be56;
-  width: 200px;
-  height: 200px;
   border-radius: 100% 0 0 0;
   box-shadow: inset 5px 5px 5px 10px green;
 }
 
-.green-flash {
-  background-color: #1ae031;
+.red-flash, .yellow-flash, .green-flash, .blue-flash {
   width: 200px;
   height: 200px;
+}
+
+@media (max-width: 420px) {
+  .red-flash, .yellow-flash, .green-flash, .blue-flash {
+    width: 185px;
+    height: 185px;
+  }
+}
+
+.green-flash {
+  background-color: #1ae031;
   border-radius: 100% 0 0 0;
 }
 
@@ -110,8 +135,6 @@ button {
 
 .red {
   background-color: #8e4040;
-  width: 200px;
-  height: 200px;
   border-radius: 0 100% 0 0;
   box-shadow: inset 5px 5px 5px 10px #7c0000;
 }
@@ -122,23 +145,17 @@ button {
 
 .red-flash {
   background-color:#ed1e1e;
-  width: 200px;
-  height: 200px;
   border-radius: 0 100% 0 0;
 }
 
 .blue {
   background-color: #304483;
-  width: 200px;
-  height: 200px;
   border-radius: 0 0 100% 0;
   box-shadow: inset 1px 1px 5px 15px #172f8c;
 }
 
 .blue-flash {
   background-color: #215cf2;
-  width: 200px;
-  height: 200px;
   border-radius: 0 0 100% 0;
 }
 
@@ -148,16 +165,12 @@ button {
 
 .yellow {
   background-color: #bbbb5b;
-  width: 200px;
-  height: 200px;
   border-radius: 0 0 0 100%;
   box-shadow: inset 5px 5px 5px 10px #9e9000;
 }
 
 .yellow-flash {
   background-color: #f2ea0c;
-  width: 200px;
-  height: 200px;
   border-radius: 0 0 0 100%;
 }
 
@@ -175,10 +188,16 @@ button {
 
 .top {
   margin: 0 auto;
-
   width: 35%;
   margin-top: 3%;
 }
+
+@media (max-width: 700px) {
+  .top {
+    width: 60%;
+  }
+}
+
 
 #playback {
 /*  display: inline-block;
