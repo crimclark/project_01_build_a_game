@@ -162,6 +162,11 @@ function sounds(event) {
   }
 }
 
+/**
+  * Plays back last sequence
+  * @param {MouseEvent}
+  * Runs playBackSequence() at interval 'speed', which runs flash() with arguments from lastSequence.
+*/
 function playBack(event) {
   var i = 0;
   var playBackInterval = setInterval(function playBackSequence() {
@@ -171,7 +176,6 @@ function playBack(event) {
       clearInterval(playBackInterval);
     }
   }, speed)
-  console.log(i);
 }
 
 function intro() {
