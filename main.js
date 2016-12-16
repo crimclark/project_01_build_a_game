@@ -14,11 +14,6 @@ var lastSequence = [];
 
 var colors = [
   {
-    $color: $red,
-    color: 'red',
-    flashClass: 'red-flash'
-  },
-  {
     $color: $blue,
     color: 'blue',
     flashClass: 'blue-flash'
@@ -32,6 +27,11 @@ var colors = [
     $color: $green,
     color: 'green',
     flashClass: 'green-flash'
+  },
+  {
+    $color: $red,
+    color: 'red',
+    flashClass: 'red-flash'
   }
 ]
 
@@ -39,6 +39,8 @@ var userValues = [];
 var colorSequence = [];
 
 var sequenceLength = 1; //store sequence length in variable. increase by 1 for each level
+
+introId = setTimeout(intro, 100);
 
 //push user click to userValues array
 var userInput = function(event) {
@@ -183,7 +185,7 @@ function intro() {
       i = 0;
       loops++;
     }
-    if (loops === 3) {
+    if (loops === 13) {
       clearInterval(introSequence);
     }
   }, 75)
@@ -200,14 +202,14 @@ var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function play (pitch) {
   var gainNode = audioContext.createGain();
-  var oscillator = audioContext.createOscillator()
-  gainNode.gain.value = .5;
+  var oscillator = audioContext.createOscillator();
+  gainNode.gain.value = .22;
   oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination)
-  oscillator.frequency.value = pitch
-  var startTime = audioContext.currentTime
-  var endTime = startTime + .3
-  gainNode.gain.setTargetAtTime(0, endTime, .5)
+  gainNode.connect(audioContext.destination);
+  oscillator.frequency.value = pitch;
+  var startTime = audioContext.currentTime;
+  var endTime = startTime + .3;
+  gainNode.gain.setTargetAtTime(0, endTime, .5);
   oscillator.start(startTime);
   oscillator.stop(endTime + 4);
 }

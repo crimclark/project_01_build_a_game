@@ -4,8 +4,18 @@ body {
   color:white;
 }
 
+#title {
+  text-align: center;
+  margin: 0 auto;
+  left: 5px;
+  width: 20%;
+  padding: 10px;
+  border-bottom:3px solid white;
+}
+
 #score-position {
   font-size: 1.5em;
+  text-indent: 5%;
 }
 
 #win-lose {
@@ -63,7 +73,7 @@ button {
   display: block;
   margin: 0 auto;
   margin-top: 10px;
-  left: -5px;
+/*  left: -5px;*/
   position:relative;
   transform: rotate(45deg);
 /*  vertical-align: middle;*/
@@ -72,8 +82,9 @@ button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  animation: rotate .5s linear 2, rotate 1s ease-out 1;
-  animation-delay:0s, 1s;
+  animation: rotate .5s linear 4, rotate 2s ease-out 1, fadeIn 3s ease 1;
+  animation-delay:0s, 2s;
+/*  animation: fadeIn 3s ease 1;*/
 }
 
 .green {
@@ -152,18 +163,19 @@ button {
   background-color:#f2ea0c;
 }
 
-.playback-div {
+/*.playback-div {
   width: 100%;
   overflow: hidden;
   display: block;
   text-align: center;
   margin: 0 auto;
-}
+}*/
 
 .top {
   margin: 0 auto;
-  width: 33%;
-  margin-top: 2%;
+
+  width: 35%;
+  margin-top: 3%;
 }
 
 #playback {
@@ -171,7 +183,10 @@ button {
   margin: 0 auto;*/
 /*vertical-align: right;*/
 /*  margin: 20px 40% 0 40%;*/
-  font-size: .6em;
+  font-size: .5em;
+  padding: 8px;
+  margin: -2px;
+ /* margin-bottom: -2px;*/
   float: right;
   color: red;
   background-color:white;
@@ -197,6 +212,14 @@ button {
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 
 
