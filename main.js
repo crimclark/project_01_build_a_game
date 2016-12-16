@@ -72,6 +72,7 @@ var userInput = function(event) {
         userValues = [];
         speed -= 20; //sequence gets 20ms faster every turn
         startSequence();
+        //set gameActive to false so userInput is not counted until next sequence is complete
         gameActive = false;
       }
     }
@@ -124,6 +125,7 @@ var flash = function($color, color){
     }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
+  window.addEventListener('keydown', enterStart);
 }
 
 var startSequence = function() {
@@ -133,6 +135,14 @@ var startSequence = function() {
     playSequence();
   } else {
     var turnDelay = setTimeout(playSequence, 1000);
+  }
+}
+
+var enterStart = function(event) {
+  if (event.keyCode === 13) {
+    startSequence();
+    window.removeEventListener('keydown', enterStart);
+    clearGame();
   }
 }
 
@@ -222,6 +232,7 @@ window.addEventListener('keydown', keyInput);
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
+window.addEventListener('keydown', enterStart);
 $startBtn.addEventListener('click', clearGame);
 $playback.addEventListener('click', playBack);
 
