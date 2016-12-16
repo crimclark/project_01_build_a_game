@@ -3,6 +3,7 @@ body {
   font-family: 'Ubuntu', sans-serif;
   background-color:black;
   color:white;
+  overflow: hidden;
 }
 
 #title {
@@ -64,6 +65,12 @@ button {
   background-color:#3B158D;
   color:white;
   box-shadow: inset .5px .5px 3px 3px #1F0657;
+}
+
+@media (max-width: 420px) {
+  #start {
+    margin: -5% 0 0 -10%;
+  }
 }
 
 /* 2C0B73 */
@@ -195,6 +202,7 @@ button {
 @media (max-width: 700px) {
   .top {
     width: 60%;
+    padding-bottom: 7%;
   }
 }
 
