@@ -77,6 +77,29 @@ var userInput = function(event) {
   }
 }
 
+var keyInput = function(event) {
+  if (event.keyCode === 38) {
+    event = {target: $green};
+    userInput(event);
+    flash($green, colors[2]);
+  }
+  if (event.keyCode === 39) {
+    event = {target: $red};
+    userInput(event);
+    flash($red, colors[3]);
+  }
+  if (event.keyCode === 40) {
+    event = {target: $blue};
+    userInput(event);
+    flash($blue, colors[0]);
+  }
+  if (event.keyCode === 37) {
+    event = {target: $yellow};
+    userInput(event);
+    flash($yellow, colors[1]);
+  }
+}
+
 var flash = function($color, color){
   $color.classList.add(color.flashClass);
 
@@ -194,7 +217,7 @@ function intro() {
   }, 75)
 }
 
-
+window.addEventListener('keydown', keyInput);
 $gameBoard.addEventListener('click', sounds);
 $gameBoard.addEventListener('click', userInput);
 $startBtn.addEventListener('click', startSequence);
