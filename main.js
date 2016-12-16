@@ -81,16 +81,16 @@ var flash = function($color, color){
   $color.classList.add(color.flashClass);
 
   if (color.flashClass === 'red-flash') {
-    play(220, .2);
+    play(220);
   }
   if (color.flashClass === 'yellow-flash') {
-    play(138.59, .2);
+    play(138.59);
   }
   if (color.flashClass === 'green-flash') {
-    play(164.81, .2);
+    play(164.81);
   }
   if (color.flashClass === 'blue-flash') {
-    play(110, .2);
+    play(110);
   }
 
 
@@ -175,12 +175,11 @@ function playBack(event) {
 }
 
 function intro() {
-  speed = 2;
   var i = 0;
   var loops = 0;
   var introSequence = setInterval(function playBackSequence() {
     flash(colors[i].$color, colors[i]);
-  i++;
+    i++;
     if (i === colors.length) {
       i = 0;
       loops++;

@@ -28,6 +28,7 @@ body {
 
 .red, .yellow, .green, .blue {
   display: inline-block;
+  cursor: pointer;
 }
 
 button {
@@ -77,12 +78,13 @@ button {
   position:relative;
   transform: rotate(45deg);
 /*  vertical-align: middle;*/
-  cursor: pointer;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  -webkit-animation: rotate .5s linear 4, rotate 2s ease-out 1, fadeIn 3s ease 1;
   animation: rotate .5s linear 4, rotate 2s ease-out 1, fadeIn 3s ease 1;
+  -webkit-animation-delay:0s, 2s;
   animation-delay:0s, 2s;
 /*  animation: fadeIn 3s ease 1;*/
 }
@@ -206,9 +208,11 @@ button {
 
 @keyframes rotate {
   from {
+    -webkit-transform: rotate(-315deg);
     transform: rotate(-315deg);
   }
   to {
+    -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
   }
 }
