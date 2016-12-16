@@ -219,7 +219,7 @@ function buzzer() {
   var oscillator = audioContext.createOscillator();
   oscillator.frequency.value = 45;
   oscillator.type = 'square';
-  gainNode.gain.value = .5;
+  gainNode.gain.value = .22;
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
   var startTime = audioContext.currentTime;
