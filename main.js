@@ -83,39 +83,39 @@ var keyInput = function(event) {
   if (event.keyCode === 38) {
     event = {target: $green};
     userInput(event);
-    flash($green, colors[2]);
+    flash($green, colors[2], 1);
   }
   if (event.keyCode === 39) {
     event = {target: $red};
     userInput(event);
-    flash($red, colors[3]);
+    flash($red, colors[3], 1);
   }
   if (event.keyCode === 40) {
     event = {target: $blue};
     userInput(event);
-    flash($blue, colors[0]);
+    flash($blue, colors[0], 1);
   }
   if (event.keyCode === 37) {
     event = {target: $yellow};
     userInput(event);
-    flash($yellow, colors[1]);
+    flash($yellow, colors[1], 1);
   }
 }
 
-var flash = function($color, color){
+var flash = function($color, color, octave){
   $color.classList.add(color.flashClass);
 
   if (color.flashClass === 'red-flash') {
-    play(220);
+    play(220 * octave);
   }
   if (color.flashClass === 'yellow-flash') {
-    play(138.59);
+    play(138.59 * octave);
   }
   if (color.flashClass === 'green-flash') {
-    play(164.81);
+    play(164.81 * octave);
   }
   if (color.flashClass === 'blue-flash') {
-    play(110);
+    play(110 * octave);
   }
 
 
@@ -150,7 +150,7 @@ function playSequence() {
   var i = 0;
   intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
-    flash(randomColor.$color, randomColor);
+    flash(randomColor.$color, randomColor, 1);
     i++;
     colorSequence.push(randomColor.color); //pushes sequence to array
     lastSequence.push(randomColor); //pushes object to store last sequence
@@ -204,7 +204,7 @@ function sounds(event) {
 function playBack(event) {
   var i = 0;
   var playBackInterval = setInterval(function playBackSequence() {
-    flash(lastSequence[i].$color, lastSequence[i]);
+    flash(lastSequence[i].$color, lastSequence[i], 1);
     i++;
     if (i >= lastSequence.length) {
       clearInterval(playBackInterval);
@@ -215,12 +215,18 @@ function playBack(event) {
 function intro() {
   var i = 0;
   var loops = 0;
+  sustain = .05;
+  release = .08;
   var introSequence = setInterval(function playBackSequence() {
-    flash(colors[i].$color, colors[i]);
+    flash(colors[i].$color, colors[i], 2);
     i++;
     if (i === colors.length) {
       i = 0;
       loops++;
+    }
+    if (loops === 12) {
+      sustain = .3;
+      release = .5;
     }
     if (loops === 13) {
       clearInterval(introSequence);
@@ -238,6 +244,9 @@ $playback.addEventListener('click', playBack);
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
+var sustain = null;
+var release = null;
+
 function play (pitch) {
   var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator();
@@ -246,8 +255,8 @@ function play (pitch) {
   gainNode.connect(audioContext.destination);
   oscillator.frequency.value = pitch;
   var startTime = audioContext.currentTime;
-  var endTime = startTime + .3;
-  gainNode.gain.setTargetAtTime(0, endTime, .5);
+  var endTime = startTime + sustain;
+  gainNode.gain.setTargetAtTime(0, endTime, release);
   oscillator.start(startTime);
   oscillator.stop(endTime + 4);
 }
@@ -270,7 +279,8 @@ function buzzer() {
 
 
 
-
+//game play sustain = .3
+//gameplay release = .5
 
 
 
