@@ -188,19 +188,20 @@ button {
   margin: -2px;
  /* margin-bottom: -2px;*/
   float: right;
-  color: red;
-  background-color:white;
+  color: #782323;
+  background-color:#FFE9E9;
+  border-radius: 5px;
 /*  height: 100%;*/
 }
 
 #playback:hover {
-  background-color: red;
-  color: white;
+  background-color: #782323;
+  color:#FFE9E9;
 }
 
 #playback:active {
-  background-color: white;
-  color: white;
+  background-color: #FFE9E9;
+  color: #782323;
 }
 
 @keyframes rotate {
