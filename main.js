@@ -11,7 +11,7 @@ var gameActive = null;
 var $playback = document.querySelector('#playback');
 var buzzerTime;
 var lastSequence = [];
-
+var playingBack = false;
 var colors = [
   {
     $color: $blue,
@@ -53,6 +53,7 @@ var userInput = function(event) {
       // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
       $startBtn.addEventListener('click', startSequence);
+      window.addEventListener('keydown', enterStart);
       // $startBtn.innerHTML = 'RETRY';
       gameActive = false;
       return false;
@@ -125,7 +126,6 @@ var flash = function($color, color, octave){
     }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
-  window.addEventListener('keydown', enterStart);
 }
 
 var startSequence = function() {
@@ -147,6 +147,10 @@ var enterStart = function(event) {
 }
 
 function playSequence() {
+  //disable reset button while sequence is playing
+  window.removeEventListener('keydown', enterStart);
+  $startBtn.setAttribute('disabled', 'true');
+  $playback.setAttribute('disabled', 'true');
   var i = 0;
   intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
@@ -157,6 +161,9 @@ function playSequence() {
     console.log(lastSequence);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
+      $startBtn.removeAttribute('disabled');
+      $playback.removeAttribute('disabled');
+      window.addEventListener('keydown', enterStart);
       gameActive = true;
     }
   }, speed);
@@ -202,12 +209,18 @@ function sounds(event) {
   * Runs playBackSequence() at interval 'speed', which runs flash() with arguments from lastSequence.
 */
 function playBack(event) {
+  window.removeEventListener('keydown', enterStart);
   var i = 0;
+  $startBtn.setAttribute('disabled', 'true');
+  $playback.setAttribute('disabled', 'true');
   var playBackInterval = setInterval(function playBackSequence() {
     flash(lastSequence[i].$color, lastSequence[i], 1);
     i++;
-    if (i >= lastSequence.length) {
+    if (i === lastSequence.length) {
       clearInterval(playBackInterval);
+      window.addEventListener('keydown', enterStart);
+      $startBtn.removeAttribute('disabled');
+      $playback.removeAttribute('disabled');
     }
   }, speed)
 }
@@ -218,18 +231,19 @@ function intro() {
   sustain = .05;
   release = .08;
   var introSequence = setInterval(function playBackSequence() {
-    flash(colors[i].$color, colors[i], 2);
+    flash(colors[i].$color, colors[i], 1);
     i++;
     if (i === colors.length) {
       i = 0;
       loops++;
     }
     if (loops === 12) {
-      sustain = .3;
-      release = .5;
+      sustain = .1;
+      release = .2;
     }
     if (loops === 13) {
       clearInterval(introSequence);
+      clearTimeout(introId);
     }
   }, 75)
 }
@@ -248,17 +262,50 @@ var sustain = null;
 var release = null;
 
 function play (pitch) {
-  var gainNode = audioContext.createGain();
   var oscillator = audioContext.createOscillator();
-  gainNode.gain.value = .22;
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  var input = audioContext.createGain();
+  oscillator.connect(input);
+  var feedback = audioContext.createGain();
+  var delay = audioContext.createDelay();
+
+  var filter = audioContext.createBiquadFilter();
+  filter.frequency.value = 600;
+
+  var output = audioContext.createGain();
+  output.connect(audioContext.destination);
+
+  delay.delayTime.value = .3;
+  feedback.gain.value = .65;
+
+
+  input.gain.value = .18;
+
+  input.connect(output);
+  input.connect(delay);
+
+
+
+
+
+
+  delay.connect(feedback);
+  feedback.connect(filter);
+  filter.connect(delay);
+
+  var delayGain = audioContext.createGain();
+  delayGain.gain.value = .35;
+  delay.connect(delayGain);
+  delayGain.connect(output);
+
+
   oscillator.frequency.value = pitch;
   var startTime = audioContext.currentTime;
   var endTime = startTime + sustain;
-  gainNode.gain.setTargetAtTime(0, endTime, release);
+  input.gain.setTargetAtTime(0, endTime, release);
   oscillator.start(startTime);
   oscillator.stop(endTime + 4);
+
+
 }
 
 function buzzer() {
