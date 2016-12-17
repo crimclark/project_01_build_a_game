@@ -38,14 +38,15 @@ var colors = [
 var userValues = [];
 var colorSequence = [];
 
-var sequenceLength = 1; //store sequence length in variable. increase by 1 for each level
+var sequenceLength = 1;
 
 introId = setTimeout(intro, 100);
 
 
 //push user click to userValues array
 var userInput = function(event) {
-  if (event.target.className && gameActive) { // prevents selecting space outside of color and ensures user has clicked start
+  // prevents selecting space outside of color and ensures user has clicked start
+  if (event.target.className && gameActive) {
     userValues.push(event.target.className);
     var currentIndex = userValues.length - 1;
     // console.log(currentIndex);
@@ -59,8 +60,10 @@ var userInput = function(event) {
       gameActive = false;
       return false;
     }
-    if (userValues.length === colorSequence.length) { // if arrays are the same length
-      if (userValues[currentIndex] === colorSequence[currentIndex]) { //if last values are equal
+    // if arrays are the same length
+    if (userValues.length === colorSequence.length) {
+      //if last values are equal
+      if (userValues[currentIndex] === colorSequence[currentIndex]) {
         // console.log('u win');
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '20') {
@@ -72,7 +75,7 @@ var userInput = function(event) {
         colorSequence = [];
         lastSequence = [];
         userValues = [];
-        speed -= 20; //sequence gets 20ms faster every turn
+        speed -= 20;
         startSequence();
         //set gameActive to false so userInput is not counted until next sequence is complete
         gameActive = false;
@@ -157,8 +160,10 @@ function playSequence() {
     var randomColor = getRandomColor();
     flash(randomColor.$color, randomColor, 1);
     i++;
-    colorSequence.push(randomColor.color); //pushes sequence to array
-    lastSequence.push(randomColor); //pushes object to store last sequence
+    //pushes sequence to array
+    colorSequence.push(randomColor.color);
+    //pushes object to store last sequence
+    lastSequence.push(randomColor);
     console.log(lastSequence);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
@@ -173,7 +178,6 @@ function playSequence() {
 var getRandomColor = function() {
     var randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
-   // console.log(colors[randomIndex]);
 }
 
 function clearGame() {
@@ -235,7 +239,7 @@ function intro() {
   sustain = .05;
   release = .08;
   var introSequence = setInterval(function playBackSequence() {
-    flash(colors[i].$color, colors[i], 1);
+    flash(colors[i].$color, colors[i], 2);
     i++;
     if (i === colors.length) {
       i = 0;
@@ -269,49 +273,36 @@ var release = null;
 
 function play (pitch) {
   var oscillator = audioContext.createOscillator();
+  // oscillator.type = 'sawtooth';
+  var oscFilter = audioContext.createBiquadFilter();
   var input = audioContext.createGain();
-  oscillator.connect(input);
+  oscillator.connect(oscFilter);
+  oscFilter.connect(input);
+  oscFilter.frequency.value = 1500;
   var feedback = audioContext.createGain();
   var delay = audioContext.createDelay();
-
   var filter = audioContext.createBiquadFilter();
-  filter.frequency.value = 600;
-
+  filter.frequency.value = 1000;
   var output = audioContext.createGain();
   output.connect(audioContext.destination);
-
   delay.delayTime.value = .3;
   feedback.gain.value = .65;
-
-
-  input.gain.value = .18;
-
+  input.gain.value = .4;
   input.connect(output);
   input.connect(delay);
-
-
-
-
-
-
   delay.connect(feedback);
   feedback.connect(filter);
   filter.connect(delay);
-
   var delayGain = audioContext.createGain();
-  delayGain.gain.value = .35;
+  delayGain.gain.value = .2;
   delay.connect(delayGain);
   delayGain.connect(output);
-
-
   oscillator.frequency.value = pitch;
   var startTime = audioContext.currentTime;
   var endTime = startTime + sustain;
   input.gain.setTargetAtTime(0, endTime, release);
   oscillator.start(startTime);
   oscillator.stop(endTime + 4);
-
-
 }
 
 function buzzer() {
@@ -328,12 +319,4 @@ function buzzer() {
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
-
-
-
-
-//game play sustain = .3
-//gameplay release = .5
-
-
 
