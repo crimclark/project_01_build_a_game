@@ -42,6 +42,7 @@ var sequenceLength = 1; //store sequence length in variable. increase by 1 for e
 
 introId = setTimeout(intro, 100);
 
+
 //push user click to userValues array
 var userInput = function(event) {
   if (event.target.className && gameActive) { // prevents selecting space outside of color and ensures user has clicked start
@@ -209,23 +210,28 @@ function sounds(event) {
   * Runs playBackSequence() at interval 'speed', which runs flash() with arguments from lastSequence.
 */
 function playBack(event) {
-  window.removeEventListener('keydown', enterStart);
-  var i = 0;
-  $startBtn.setAttribute('disabled', 'true');
-  $playback.setAttribute('disabled', 'true');
-  var playBackInterval = setInterval(function playBackSequence() {
-    flash(lastSequence[i].$color, lastSequence[i], 1);
-    i++;
-    if (i === lastSequence.length) {
-      clearInterval(playBackInterval);
-      window.addEventListener('keydown', enterStart);
-      $startBtn.removeAttribute('disabled');
-      $playback.removeAttribute('disabled');
-    }
-  }, speed)
+  if (lastSequence !== []) {
+    window.removeEventListener('keydown', enterStart);
+    $startBtn.setAttribute('disabled', 'true');
+    var i = 0;
+    $playback.setAttribute('disabled', 'true');
+    var playBackInterval = setInterval(function playBackSequence() {
+      flash(lastSequence[i].$color, lastSequence[i], 1);
+      i++;
+      if (i === lastSequence.length) {
+        clearInterval(playBackInterval);
+        window.addEventListener('keydown', enterStart);
+        $startBtn.removeAttribute('disabled');
+        $playback.removeAttribute('disabled');
+      }
+    }, speed)
+  }
 }
 
 function intro() {
+  $playback.setAttribute('disabled', 'true');
+  $startBtn.setAttribute('disabled', 'true');
+  window.removeEventListener('keydown', enterStart);
   var i = 0;
   var loops = 0;
   sustain = .05;
@@ -244,6 +250,8 @@ function intro() {
     if (loops === 13) {
       clearInterval(introSequence);
       clearTimeout(introId);
+      window.addEventListener('keydown', enterStart);
+      $startBtn.removeAttribute('disabled');
     }
   }, 75)
 }
