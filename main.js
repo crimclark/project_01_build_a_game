@@ -210,22 +210,20 @@ function sounds(event) {
   * Runs playBackSequence() at interval 'speed', which runs flash() with arguments from lastSequence.
 */
 function playBack(event) {
-  if (lastSequence !== []) {
-    window.removeEventListener('keydown', enterStart);
-    $startBtn.setAttribute('disabled', 'true');
-    var i = 0;
-    $playback.setAttribute('disabled', 'true');
-    var playBackInterval = setInterval(function playBackSequence() {
-      flash(lastSequence[i].$color, lastSequence[i], 1);
-      i++;
-      if (i === lastSequence.length) {
-        clearInterval(playBackInterval);
-        window.addEventListener('keydown', enterStart);
-        $startBtn.removeAttribute('disabled');
-        $playback.removeAttribute('disabled');
-      }
-    }, speed)
-  }
+  window.removeEventListener('keydown', enterStart);
+  $startBtn.setAttribute('disabled', 'true');
+  var i = 0;
+  $playback.setAttribute('disabled', 'true');
+  var playBackInterval = setInterval(function playBackSequence() {
+    flash(lastSequence[i].$color, lastSequence[i], 1);
+    i++;
+    if (i === lastSequence.length) {
+      clearInterval(playBackInterval);
+      window.addEventListener('keydown', enterStart);
+      $startBtn.removeAttribute('disabled');
+      $playback.removeAttribute('disabled');
+    }
+  }, speed)
 }
 
 function intro() {
