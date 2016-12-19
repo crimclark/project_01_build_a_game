@@ -7,8 +7,6 @@ body {
   transition: background-color 2s;
 }
 
-
-
 #title {
   text-align: center;
   margin: 0 auto;
@@ -53,8 +51,6 @@ button {
   margin-top: 2px;
   font-size:.8em;
 }
-
-
 
 #start {
   position: absolute;
@@ -188,14 +184,6 @@ button {
   background-color:yellow;
 }
 
-/*.playback-div {
-  width: 100%;
-  overflow: hidden;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-}*/
-
 .top {
   margin: 0 auto;
   width: 35%;
@@ -209,21 +197,14 @@ button {
   }
 }
 
-
 #playback {
-/*  display: inline-block;
-  margin: 0 auto;*/
-/*vertical-align: right;*/
-/*  margin: 20px 40% 0 40%;*/
   font-size: .5em;
   padding: 8px;
   margin: -2px;
- /* margin-bottom: -2px;*/
   float: right;
   color: #782323;
   background-color:#FFE9E9;
   border-radius: 5px;
-/*  height: 100%;*/
 }
 
 #playback:hover {
