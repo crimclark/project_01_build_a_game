@@ -11,7 +11,6 @@ var gameActive = null;
 var $playback = document.querySelector('#playback');
 var buzzerTime;
 var lastSequence = [];
-var playingBack = false;
 var colors = [
   {
     $color: $blue,
@@ -33,14 +32,14 @@ var colors = [
     color: 'red',
     flashClass: 'red-flash'
   }
-]
+];
 
 var userValues = [];
 var colorSequence = [];
 
 var sequenceLength = 1;
 
-introId = setTimeout(intro, 100);
+var introId = setTimeout(intro, 100);
 
 
 //push user click to userValues array
@@ -82,7 +81,7 @@ var userInput = function(event) {
       }
     }
   }
-}
+};
 
 var keyInput = function(event) {
   if (event.keyCode === 38) {
@@ -105,7 +104,7 @@ var keyInput = function(event) {
     userInput(event);
     flash($yellow, colors[1], 1);
   }
-}
+};
 
 var flash = function($color, color, octave){
   $color.classList.add(color.flashClass);
@@ -125,12 +124,12 @@ var flash = function($color, color, octave){
 
 
   if($color.classList.contains(color.flashClass)) {
-    var intervalId2 = setTimeout(function flashOff() {
+    setTimeout(function flashOff() {
       $color.classList.remove(color.flashClass);
     }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
-}
+};
 
 var startSequence = function() {
   $startBtn.removeEventListener('click', startSequence);
@@ -138,9 +137,9 @@ var startSequence = function() {
   if (sequenceLength === 1) {
     playSequence();
   } else {
-    var turnDelay = setTimeout(playSequence, 1000);
+    setTimeout(playSequence, 1000);
   }
-}
+};
 
 var enterStart = function(event) {
   if (event.keyCode === 13) {
@@ -148,7 +147,7 @@ var enterStart = function(event) {
     window.removeEventListener('keydown', enterStart);
     clearGame();
   }
-}
+};
 
 function playSequence() {
   //disable reset button while sequence is playing
@@ -156,7 +155,7 @@ function playSequence() {
   $startBtn.setAttribute('disabled', 'true');
   $playback.setAttribute('disabled', 'true');
   var i = 0;
-  intervalId = setInterval(function randomSequence() {
+  var intervalId = setInterval(function randomSequence() {
     var randomColor = getRandomColor();
     flash(randomColor.$color, randomColor, 1);
     i++;
@@ -178,7 +177,7 @@ function playSequence() {
 var getRandomColor = function() {
     var randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
-}
+};
 
 function clearGame() {
   lastSequence = [];
@@ -227,7 +226,7 @@ function playBack(event) {
       $startBtn.removeAttribute('disabled');
       $playback.removeAttribute('disabled');
     }
-  }, speed)
+  }, speed);
 }
 
 function intro() {
@@ -236,8 +235,8 @@ function intro() {
   window.removeEventListener('keydown', enterStart);
   var i = 0;
   var loops = 0;
-  sustain = .05;
-  release = .08;
+  sustain = 0.05;
+  release = 0.08;
   var introSequence = setInterval(function playBackSequence() {
     flash(colors[i].$color, colors[i], 2);
     i++;
@@ -246,8 +245,8 @@ function intro() {
       loops++;
     }
     if (loops === 12) {
-      sustain = .1;
-      release = .2;
+      sustain = 0.1;
+      release = 0.2;
     }
     if (loops === 13) {
       clearInterval(introSequence);
@@ -255,7 +254,7 @@ function intro() {
       window.addEventListener('keydown', enterStart);
       $startBtn.removeAttribute('disabled');
     }
-  }, 75)
+  }, 75);
 }
 
 window.addEventListener('keydown', keyInput);
@@ -285,16 +284,16 @@ function play (pitch) {
   filter.frequency.value = 1000;
   var output = audioContext.createGain();
   output.connect(audioContext.destination);
-  delay.delayTime.value = .3;
-  feedback.gain.value = .65;
-  input.gain.value = .4;
+  delay.delayTime.value = 0.3;
+  feedback.gain.value = 0.65;
+  input.gain.value = 0.4;
   input.connect(output);
   input.connect(delay);
   delay.connect(feedback);
   feedback.connect(filter);
   filter.connect(delay);
   var delayGain = audioContext.createGain();
-  delayGain.gain.value = .2;
+  delayGain.gain.value = 0.2;
   delay.connect(delayGain);
   delayGain.connect(output);
   oscillator.frequency.value = pitch;
@@ -310,12 +309,12 @@ function buzzer() {
   var oscillator = audioContext.createOscillator();
   oscillator.frequency.value = 45;
   oscillator.type = 'square';
-  gainNode.gain.value = .22;
+  gainNode.gain.value = 0.22;
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
   var startTime = audioContext.currentTime;
-  var endTime = startTime + .6;
-  gainNode.gain.setTargetAtTime(0, endTime, .01);
+  var endTime = startTime + 0.6;
+  gainNode.gain.setTargetAtTime(0, endTime, 0.01);
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
