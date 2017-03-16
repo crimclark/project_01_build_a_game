@@ -272,7 +272,6 @@ var release = null;
 
 function play (pitch) {
   var oscillator = audioContext.createOscillator();
-  // oscillator.type = 'sawtooth';
   var oscFilter = audioContext.createBiquadFilter();
   var input = audioContext.createGain();
   oscillator.connect(oscFilter);

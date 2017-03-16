@@ -59,6 +59,7 @@ button {
   height: 10%;
   width:20%;
 /*  margin: auto;*/
+  -webkit-transform: rotate(45deg);
   transform: rotate(-45deg);
   margin: -6% 0 0 -10%;
   background-color:#3B158D;
@@ -72,9 +73,6 @@ button {
   }
 }
 
-/* 2C0B73 */
-/* 1F0657 */
-
 #start:hover {
   color:white;
   background-color:#4e0c68;
@@ -87,23 +85,22 @@ button {
 
 #container {
   width: 405px;
-/*  height: 200px;*/
   display: block;
   margin: 0 auto;
   margin-top: 10px;
-/*  left: -5px;*/
   position:relative;
+  -webkit-transform: rotate(-45deg);
   transform: rotate(45deg);
-/*  vertical-align: middle;*/
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  -webkit-animation: rotate .5s linear 4, rotate 2s ease-out 1, fadeIn 3s ease 1;
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: .5s;
+  -webkit-animation-timing-function: linear ;
+  -webkit-animation-iteration-count: 4;
   animation: rotate .5s linear 4, rotate 2s ease-out 1, fadeIn 3s ease 1;
-  -webkit-animation-delay:0s, 2s;
   animation-delay:0s, 2s;
-/*  animation: fadeIn 3s ease 1;*/
 }
 
 @media (max-width: 420px) {
@@ -227,6 +224,7 @@ button {
     transform: rotate(45deg);
   }
 }
+
 
 @keyframes fadeIn {
   from {
