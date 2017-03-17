@@ -48,10 +48,8 @@ var userInput = function(event) {
   if (event.target.className && gameActive) {
     userValues.push(event.target.className);
     var currentIndex = userValues.length - 1;
-    // console.log(currentIndex);
     if (userValues[currentIndex] !== colorSequence[currentIndex]) {
       buzzerTime = setTimeout(buzzer, 200);
-      // console.log('u lose');
       winLoseMessage.innerHTML = 'You Lose!';
       $startBtn.addEventListener('click', startSequence);
       window.addEventListener('keydown', enterStart);
@@ -63,7 +61,6 @@ var userInput = function(event) {
     if (userValues.length === colorSequence.length) {
       //if last values are equal
       if (userValues[currentIndex] === colorSequence[currentIndex]) {
-        // console.log('u win');
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
@@ -163,7 +160,6 @@ function playSequence() {
     colorSequence.push(randomColor.color);
     //pushes object to store last sequence
     lastSequence.push(randomColor);
-    console.log(lastSequence);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
       $startBtn.removeAttribute('disabled');
