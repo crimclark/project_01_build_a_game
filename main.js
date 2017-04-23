@@ -1,21 +1,21 @@
-var $gameBoard = document.querySelector('#container');
-var $red = document.querySelector('.red');
-var $blue = document.querySelector('.blue');
-var $yellow = document.querySelector('.yellow');
-var $green = document.querySelector('.green');
-var $score = document.querySelector('#score');
-var $startBtn = document.querySelector('#start');
-var winLoseMessage = document.querySelector('#win-lose');
-var $playback = document.querySelector('#playback');
-var speed = 500;
-var gameActive;
-var buzzerTime;
-var lastSequence = [];
-var userValues = [];
-var colorSequence = [];
-var sequenceLength = 1;
+const $gameBoard = document.querySelector('#container');
+const $red = document.querySelector('.red');
+const $blue = document.querySelector('.blue');
+const $yellow = document.querySelector('.yellow');
+const $green = document.querySelector('.green');
+const $score = document.querySelector('#score');
+const $startBtn = document.querySelector('#start');
+const winLoseMessage = document.querySelector('#win-lose');
+const $playback = document.querySelector('#playback');
+let speed = 500;
+let gameActive;
+let buzzerTime;
+let lastSequence = [];
+let userValues = [];
+let colorSequence = [];
+let sequenceLength = 1;
 
-var colors = [
+const colors = [
   {
     color: 'blue',
     node: $blue,
@@ -38,7 +38,12 @@ var colors = [
   }
 ];
 
-var introId = setTimeout(intro, 100);
+const soundParams = {
+  sustain: 0.05,
+  release: 0.08
+}
+
+const introId = setTimeout(intro, 100);
 
 //push user click to userValues array
 var userInput = function(event) {
@@ -49,11 +54,10 @@ var userInput = function(event) {
     if (userValues[index] !== colorSequence[index]) {
       buzzerTime = setTimeout(buzzer, 200);
       winLoseMessage.innerHTML = 'You Lose!';
-      $startBtn.addEventListener('click', startSequence);
-      window.addEventListener('keydown', enterStart);
-      // $startBtn.innerHTML = 'RETRY';
+      // $startBtn.addEventListener('click', startSequence);
       gameActive = false;
-      return false;
+      // window.addEventListener('keydown', enterStart);
+      return;
     }
     // if arrays are the same length
     if (userValues.length === colorSequence.length) {
@@ -83,9 +87,19 @@ function findIndex(color) {
 }
 
 var keyInput = function(event) {
-  if (gameActive) {
+  const { keyCode } = event;
+
+  // if (keyCode === 13) {
+  //   return;
+  // }
+
+  if (keyCode !== 13) {
     let i;
-    switch(event.keyCode) {
+    switch(keyCode) {
+      // case 13:
+      //   startSequence();
+      //   clearGame();
+      //   return;
       case 38:
         event = {target: $green};
         i = findIndex('green');
@@ -102,6 +116,8 @@ var keyInput = function(event) {
         event = {target: $yellow};
         i = findIndex('yellow');
         break;
+      default:
+        return;
     }
     userInput(event);
     flash(colors[i]);
@@ -112,6 +128,7 @@ function flash(colorObj, octave = 1) {
   const { color, pitch, node } = colorObj;
   let flashClass = `${color}-flash`;
   node.classList.add(flashClass);
+  console.log(colorObj)
   play(pitch * octave);
   setTimeout( () => {
     node.classList.remove(flashClass);
@@ -120,23 +137,32 @@ function flash(colorObj, octave = 1) {
 
 // if first sequence, start immediately, else delay next turn by 1 sec
 var startSequence = function() {
-  $startBtn.removeEventListener('click', startSequence);
+  setGameActive();
+  // $startBtn.removeEventListener('click', startSequence);
   sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
 };
+
+function setGameActive() {
+  gameActive = true;
+  // $gameBoard.addEventListener('click', userInput);
+}
 
 var enterStart = function(event) {
   if (event.keyCode === 13) {
     startSequence();
-    window.removeEventListener('keydown', enterStart);
+    // window.removeEventListener('keydown', enterStart);
     clearGame();
   }
 };
 
 function playSequence() {
   //disable reset button while sequence is playing
-  window.removeEventListener('keydown', enterStart);
+  // window.removeEventListener('keydown', enterStart);
+  // window.removeEventListener('click', userInput);
+  removeEventListeners();
   $startBtn.setAttribute('disabled', 'true');
   $playback.setAttribute('disabled', 'true');
+  gameActive = false;
   var i = 0;
   var intervalId = setInterval( () => {
     var randomColor = getRandomColor();
@@ -150,14 +176,15 @@ function playSequence() {
       clearTimeout(intervalId);
       $startBtn.removeAttribute('disabled');
       $playback.removeAttribute('disabled');
-      window.addEventListener('keydown', enterStart);
+      // window.addEventListener('keydown', enterStart);
+      addEventListeners();
       gameActive = true;
     }
   }, speed);
 }
 
-var getRandomColor = function() {
-  var randomIndex = Math.floor(Math.random() * colors.length);
+function getRandomColor() {
+  const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 };
 
@@ -181,38 +208,57 @@ function sounds(event) {
   else if ( classList.contains('yellow') ) i = findIndex('yellow');
   else if ( classList.contains('green') ) i = findIndex('green');
   else if ( classList.contains('blue') ) i = findIndex('blue');
-  play(colors[i].pitch);
+  if (i >= 0) play(colors[i].pitch);
 };
 
-/**
-  * Plays back last sequence
-  * @param {MouseEvent}
-  * Runs playBackSequence() at interval 'speed', which runs flash() with arguments from lastSequence.
-*/
 function playBack(event) {
-  window.removeEventListener('keydown', enterStart);
+  // window.removeEventListener('keydown', enterStart);
+  // window.removeEventListener('keydown', keyInput);
+  removeEventListeners();
   $startBtn.setAttribute('disabled', 'true');
-  var i = 0;
+  let i = 0;
   $playback.setAttribute('disabled', 'true');
-  var playBackInterval = setInterval( () => {
+  const playBackInterval = setInterval( () => {
     flash(lastSequence[i]);
     i++;
     if (i === lastSequence.length) {
       clearInterval(playBackInterval);
-      window.addEventListener('keydown', enterStart);
+      // window.addEventListener('keydown', enterStart);
+      // window.addEventListener('keydown', keyInput);
+      addEventListeners();
       $startBtn.removeAttribute('disabled');
       $playback.removeAttribute('disabled');
     }
   }, speed);
 }
 
+function addEventListeners() {
+  window.addEventListener('keydown', enterStart);
+  window.addEventListener('keydown', keyInput);
+  $gameBoard.addEventListener('click', userInput);
+  $gameBoard.addEventListener('click', sounds);
+  $startBtn.addEventListener('click', startSequence);
+  $playback.addEventListener('click', playBack);
+  $startBtn.addEventListener('click', clearGame);
+}
+
+function removeEventListeners() {
+  window.removeEventListener('keydown', enterStart);
+  window.removeEventListener('keydown', keyInput);
+  $gameBoard.removeEventListener('click', userInput);
+  $gameBoard.removeEventListener('click', sounds);
+  $startBtn.removeEventListener('click', startSequence);
+  $playback.removeEventListener('click', playBack);
+  $startBtn.removeEventListener('click', clearGame);
+}
+
 function intro() {
   disableActions();
-  var i = 0;
-  var loops = 0;
+  let i = 0;
+  let loops = 0;
   sustain = 0.05;
   release = 0.08;
-  var introSequence = setInterval( () => {
+  const introSequence = setInterval( () => {
     flash(colors[i], 2);
     i++;
     if (i === colors.length) {
@@ -227,7 +273,10 @@ function intro() {
       case 13:
         clearInterval(introSequence);
         clearTimeout(introId);
-        window.addEventListener('keydown', enterStart);
+        addEventListeners();
+        // window.addEventListener('keydown', enterStart);
+        // window.addEventListener('keydown', keyInput);
+        // gameActive = true;
         $startBtn.removeAttribute('disabled');
         break;
     }
@@ -237,16 +286,7 @@ function intro() {
 function disableActions() {
   $playback.setAttribute('disabled', 'true');
   $startBtn.setAttribute('disabled', 'true');
-  window.removeEventListener('keydown', enterStart);
 }
-
-window.addEventListener('keydown', keyInput);
-$gameBoard.addEventListener('click', sounds);
-$gameBoard.addEventListener('click', userInput);
-$startBtn.addEventListener('click', startSequence);
-window.addEventListener('keydown', enterStart);
-$startBtn.addEventListener('click', clearGame);
-$playback.addEventListener('click', playBack);
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
