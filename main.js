@@ -15,29 +15,6 @@ var userValues = [];
 var colorSequence = [];
 var sequenceLength = 1;
 
-// var colors = [
-//   {
-//     $color: $blue,
-//     color: 'blue',
-//     flashClass: 'blue-flash'
-//   },
-//   {
-//     $color: $yellow,
-//     color: 'yellow',
-//     flashClass: 'yellow-flash'
-//   },
-//   {
-//     $color: $green,
-//     color: 'green',
-//     flashClass: 'green-flash'
-//   },
-//   {
-//     $color: $red,
-//     color: 'red',
-//     flashClass: 'red-flash'
-//   }
-// ];
-
 var colors = [
   {
     color: 'blue',
@@ -105,96 +82,40 @@ function findIndex(color) {
   return colors.findIndex( el => el.color === color );
 }
 
-// var keyInput = function(event) {
-//   if (gameActive) {
-//     let i;
-//     switch(event.keyCode) {
-//       case 38:
-//         event = {target: $green};
-//         i = findIndex('green');
-//         break;
-//       case 39:
-//         event = {target: $red};
-//         i = findIndex('red');
-//         break;
-//       case 40:
-//         event = {target: $blue};
-//         i = findIndex('blue');
-//         break;
-//       case 37:
-//         event = {target: $yellow};
-//         i = findIndex('yellow');
-//         break;
-//     }
-//     userInput(event);
-//     flash(colors[i]);
-//   }
-// }
-
 var keyInput = function(event) {
   if (gameActive) {
+    let i;
     switch(event.keyCode) {
       case 38:
         event = {target: $green};
-        userInput(event);
-        flash($green, colors[2], 1);
+        i = findIndex('green');
         break;
       case 39:
         event = {target: $red};
-        userInput(event);
-        flash($red, colors[3], 1);
+        i = findIndex('red');
         break;
       case 40:
         event = {target: $blue};
-        userInput(event);
-        flash($blue, colors[0], 1);
+        i = findIndex('blue');
         break;
       case 37:
         event = {target: $yellow};
-        userInput(event);
-        flash($yellow, colors[1], 1);
+        i = findIndex('yellow');
         break;
     }
+    userInput(event);
+    flash(colors[i]);
   }
 }
 
-// var flash = function($color, color, octave){
-//   $color.classList.add(color.flashClass);
-
-//   switch(color.flashClass) {
-//     case 'red-flash':
-//       play(220 * octave);
-//       break;
-//     case 'yellow-flash':
-//       play(138.59 * octave);
-//       break;
-//     case 'green-flash':
-//       play(164.81 * octave);
-//       break;
-//     case 'blue-flash':
-//       play(110 * octave);
-//       break;
-//   }
-
-//   if($color.classList.contains(color.flashClass)) {
-//     setTimeout(function flashOff() {
-//       $color.classList.remove(color.flashClass);
-//     }, 150);
-//   }
-//   $startBtn.addEventListener('click', startSequence);
-// };
-
-function flash(colorObj, octave) {
+function flash(colorObj, octave = 1) {
   const { color, pitch, node } = colorObj;
   let flashClass = `${color}-flash`;
   node.classList.add(flashClass);
   play(pitch * octave);
-  if ( node.classList.contains(flashClass) ) {
-    setTimeout( () => {
-      node.classList.remove(flashClass);
-    }, 150);
-  }
-  $startBtn.addEventListener('click', startSequence);
+  setTimeout( () => {
+    node.classList.remove(flashClass);
+  }, 150);
 };
 
 // if first sequence, start immediately, else delay next turn by 1 sec
@@ -217,9 +138,9 @@ function playSequence() {
   $startBtn.setAttribute('disabled', 'true');
   $playback.setAttribute('disabled', 'true');
   var i = 0;
-  var intervalId = setInterval(function randomSequence() {
+  var intervalId = setInterval( () => {
     var randomColor = getRandomColor();
-    flash(randomColor.$color, randomColor, 1);
+    flash(randomColor);
     i++;
     //pushes sequence to array
     colorSequence.push(randomColor.color);
@@ -255,30 +176,13 @@ function clearGame() {
 function sounds(event) {
   clearTimeout(buzzerTime);
   const { classList } = event.target;
-  if (classList.contains('red')) {
-    play(220);
-  }
-  if (classList.contains('yellow')) {
-    play(138.59);
-  }
-  if (classList.contains('green')) {
-    play(164.81);
-  }
-  if (classList.contains('blue')) {
-    play(110);
-  }
-}
-
-// function sounds(event) {
-//   clearTimeout(buzzerTime);
-//   const { classList } = event.target;
-//   let i;
-//   if ( classList.contains('red') ) i = findIndex('red');
-//   else if ( classList.contains('yellow') ) i = findIndex('yellow');
-//   else if ( classList.contains('green') ) i = findIndex('green');
-//   else if ( classList.contains('blue') ) i = findIndex('blue');
-//   play(colors[i].pitch);
-// };
+  let i;
+  if ( classList.contains('red') ) i = findIndex('red');
+  else if ( classList.contains('yellow') ) i = findIndex('yellow');
+  else if ( classList.contains('green') ) i = findIndex('green');
+  else if ( classList.contains('blue') ) i = findIndex('blue');
+  play(colors[i].pitch);
+};
 
 /**
   * Plays back last sequence
@@ -290,8 +194,8 @@ function playBack(event) {
   $startBtn.setAttribute('disabled', 'true');
   var i = 0;
   $playback.setAttribute('disabled', 'true');
-  var playBackInterval = setInterval(function playBackSequence() {
-    flash(lastSequence[i].$color, lastSequence[i], 1);
+  var playBackInterval = setInterval( () => {
+    flash(lastSequence[i]);
     i++;
     if (i === lastSequence.length) {
       clearInterval(playBackInterval);
@@ -329,34 +233,6 @@ function intro() {
     }
   }, 75);
 }
-
-// function intro() {
-//   disableActions();
-//   var i = 0;
-//   var loops = 0;
-//   sustain = 0.05;
-//   release = 0.08;
-//   var introSequence = setInterval( () => {
-//     flash(colors[i].$color, colors[i], 2);
-//     i++;
-//     if (i === colors.length) {
-//       i = 0;
-//       loops++;
-//     }
-//     switch(loops) {
-//       case 12:
-//         sustain = 0.1;
-//         release = 0.2;
-//         break;
-//       case 13:
-//         clearInterval(introSequence);
-//         clearTimeout(introId);
-//         window.addEventListener('keydown', enterStart);
-//         $startBtn.removeAttribute('disabled');
-//         break;
-//     }
-//   }, 75);
-// }
 
 function disableActions() {
   $playback.setAttribute('disabled', 'true');
