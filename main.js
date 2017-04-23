@@ -160,8 +160,8 @@ function playSequence() {
   // window.removeEventListener('keydown', enterStart);
   // window.removeEventListener('click', userInput);
   removeEventListeners();
-  $startBtn.setAttribute('disabled', 'true');
-  $playback.setAttribute('disabled', 'true');
+  // $startBtn.setAttribute('disabled', 'true');
+  // $playback.setAttribute('disabled', 'true');
   gameActive = false;
   var i = 0;
   var intervalId = setInterval( () => {
@@ -174,8 +174,8 @@ function playSequence() {
     lastSequence.push(randomColor);
     if (i === sequenceLength) {
       clearTimeout(intervalId);
-      $startBtn.removeAttribute('disabled');
-      $playback.removeAttribute('disabled');
+      // $startBtn.removeAttribute('disabled');
+      // $playback.removeAttribute('disabled');
       // window.addEventListener('keydown', enterStart);
       addEventListeners();
       gameActive = true;
@@ -215,9 +215,9 @@ function playBack(event) {
   // window.removeEventListener('keydown', enterStart);
   // window.removeEventListener('keydown', keyInput);
   removeEventListeners();
-  $startBtn.setAttribute('disabled', 'true');
+  // $startBtn.setAttribute('disabled', 'true');
   let i = 0;
-  $playback.setAttribute('disabled', 'true');
+  // $playback.setAttribute('disabled', 'true');
   const playBackInterval = setInterval( () => {
     flash(lastSequence[i]);
     i++;
@@ -226,8 +226,8 @@ function playBack(event) {
       // window.addEventListener('keydown', enterStart);
       // window.addEventListener('keydown', keyInput);
       addEventListeners();
-      $startBtn.removeAttribute('disabled');
-      $playback.removeAttribute('disabled');
+      // $startBtn.removeAttribute('disabled');
+      // $playback.removeAttribute('disabled');
     }
   }, speed);
 }
@@ -253,7 +253,7 @@ function removeEventListeners() {
 }
 
 function intro() {
-  disableActions();
+  // disableActions();
   let i = 0;
   let loops = 0;
   sustain = 0.05;
@@ -277,16 +277,16 @@ function intro() {
         // window.addEventListener('keydown', enterStart);
         // window.addEventListener('keydown', keyInput);
         // gameActive = true;
-        $startBtn.removeAttribute('disabled');
+        // $startBtn.removeAttribute('disabled');
         break;
     }
   }, 75);
 }
 
-function disableActions() {
-  $playback.setAttribute('disabled', 'true');
-  $startBtn.setAttribute('disabled', 'true');
-}
+// function disableActions() {
+//   $playback.setAttribute('disabled', 'true');
+//   $startBtn.setAttribute('disabled', 'true');
+// }
 
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
