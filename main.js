@@ -15,51 +15,51 @@ var userValues = [];
 var colorSequence = [];
 var sequenceLength = 1;
 
-var colors = [
-  {
-    $color: $blue,
-    color: 'blue',
-    flashClass: 'blue-flash'
-  },
-  {
-    $color: $yellow,
-    color: 'yellow',
-    flashClass: 'yellow-flash'
-  },
-  {
-    $color: $green,
-    color: 'green',
-    flashClass: 'green-flash'
-  },
-  {
-    $color: $red,
-    color: 'red',
-    flashClass: 'red-flash'
-  }
-];
-
 // var colors = [
 //   {
+//     $color: $blue,
 //     color: 'blue',
-//     node: $blue,
-//     pitch: 110
+//     flashClass: 'blue-flash'
 //   },
 //   {
+//     $color: $yellow,
 //     color: 'yellow',
-//     node: $yellow,
-//     pitch: 138.59
+//     flashClass: 'yellow-flash'
 //   },
 //   {
+//     $color: $green,
 //     color: 'green',
-//     node: $green,
-//     pitch: 164.81
+//     flashClass: 'green-flash'
 //   },
 //   {
+//     $color: $red,
 //     color: 'red',
-//     node: $red,
-//     pitch: 220
+//     flashClass: 'red-flash'
 //   }
 // ];
+
+var colors = [
+  {
+    color: 'blue',
+    node: $blue,
+    pitch: 110
+  },
+  {
+    color: 'yellow',
+    node: $yellow,
+    pitch: 138.59
+  },
+  {
+    color: 'green',
+    node: $green,
+    pitch: 164.81
+  },
+  {
+    color: 'red',
+    node: $red,
+    pitch: 220
+  }
+];
 
 var introId = setTimeout(intro, 100);
 
@@ -184,35 +184,14 @@ var keyInput = function(event) {
 //   $startBtn.addEventListener('click', startSequence);
 // };
 
-var flash = function($color, color, octave){
-  // pass in entire color object
-  // const { color, pitch, node } = color
-
+function flash(colorObj, octave) {
+  const { color, pitch, node } = colorObj;
   let flashClass = `${color}-flash`;
-  $color.classList.add(flashClass);
-
-  switch(flashClass) {
-    case 'red-flash':
-      play(220 * octave);
-      break;
-    case 'yellow-flash':
-      play(138.59 * octave);
-      break;
-    case 'green-flash':
-      play(164.81 * octave);
-      break;
-    case 'blue-flash':
-      play(110 * octave);
-      break;
-  }
-
-  // refactor to pass in entire color object
-  // remove switchstatement and instead
-  // play(color.pitch);
-
-  if($color.classList.contains(flashClass)) {
+  node.classList.add(flashClass);
+  play(pitch * octave);
+  if ( node.classList.contains(flashClass) ) {
     setTimeout( () => {
-      $color.classList.remove(flashClass);
+      node.classList.remove(flashClass);
     }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
@@ -330,7 +309,7 @@ function intro() {
   sustain = 0.05;
   release = 0.08;
   var introSequence = setInterval( () => {
-    flash(colors[i].$color, colors[i].color, 2);
+    flash(colors[i], 2);
     i++;
     if (i === colors.length) {
       i = 0;
