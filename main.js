@@ -82,30 +82,31 @@ var userInput = function(event) {
 
 
 var keyInput = function(event) {
-  switch(event.keyCode) {
-    case 38:
-      event = {target: $green};
-      userInput(event);
-      flash($green, colors[2], 1);
-      break;
-    case 39:
-      event = {target: $red};
-      userInput(event);
-      flash($red, colors[3], 1);
-      break;
-    case 40:
-      event = {target: $blue};
-      userInput(event);
-      flash($blue, colors[0], 1);
-      break;
-    case 37:
-      event = {target: $yellow};
-      userInput(event);
-      flash($yellow, colors[1], 1);
-      break;
+  if (gameActive) {
+    switch(event.keyCode) {
+      case 38:
+        event = {target: $green};
+        userInput(event);
+        flash($green, colors[2], 1);
+        break;
+      case 39:
+        event = {target: $red};
+        userInput(event);
+        flash($red, colors[3], 1);
+        break;
+      case 40:
+        event = {target: $blue};
+        userInput(event);
+        flash($blue, colors[0], 1);
+        break;
+      case 37:
+        event = {target: $yellow};
+        userInput(event);
+        flash($yellow, colors[1], 1);
+        break;
+    }
   }
 }
-
 
 var flash = function($color, color, octave){
   $color.classList.add(color.flashClass);
@@ -231,31 +232,37 @@ function playBack(event) {
 }
 
 function intro() {
-  $playback.setAttribute('disabled', 'true');
-  $startBtn.setAttribute('disabled', 'true');
-  window.removeEventListener('keydown', enterStart);
+  disableActions();
   var i = 0;
   var loops = 0;
   sustain = 0.05;
   release = 0.08;
-  var introSequence = setInterval(function playBackSequence() {
+  var introSequence = setInterval( () => {
     flash(colors[i].$color, colors[i], 2);
     i++;
     if (i === colors.length) {
       i = 0;
       loops++;
     }
-    if (loops === 12) {
-      sustain = 0.1;
-      release = 0.2;
-    }
-    if (loops === 13) {
-      clearInterval(introSequence);
-      clearTimeout(introId);
-      window.addEventListener('keydown', enterStart);
-      $startBtn.removeAttribute('disabled');
+    switch(loops) {
+      case 12:
+        sustain = 0.1;
+        release = 0.2;
+        break;
+      case 13:
+        clearInterval(introSequence);
+        clearTimeout(introId);
+        window.addEventListener('keydown', enterStart);
+        $startBtn.removeAttribute('disabled');
+        break;
     }
   }, 75);
+}
+
+function disableActions() {
+  $playback.setAttribute('disabled', 'true');
+  $startBtn.setAttribute('disabled', 'true');
+  window.removeEventListener('keydown', enterStart);
 }
 
 window.addEventListener('keydown', keyInput);
