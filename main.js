@@ -80,45 +80,50 @@ var userInput = function(event) {
   }
 };
 
+
 var keyInput = function(event) {
-  if (event.keyCode === 38) {
-    event = {target: $green};
-    userInput(event);
-    flash($green, colors[2], 1);
+  switch(event.keyCode) {
+    case 38:
+      event = {target: $green};
+      userInput(event);
+      flash($green, colors[2], 1);
+      break;
+    case 39:
+      event = {target: $red};
+      userInput(event);
+      flash($red, colors[3], 1);
+      break;
+    case 40:
+      event = {target: $blue};
+      userInput(event);
+      flash($blue, colors[0], 1);
+      break;
+    case 37:
+      event = {target: $yellow};
+      userInput(event);
+      flash($yellow, colors[1], 1);
+      break;
   }
-  if (event.keyCode === 39) {
-    event = {target: $red};
-    userInput(event);
-    flash($red, colors[3], 1);
-  }
-  if (event.keyCode === 40) {
-    event = {target: $blue};
-    userInput(event);
-    flash($blue, colors[0], 1);
-  }
-  if (event.keyCode === 37) {
-    event = {target: $yellow};
-    userInput(event);
-    flash($yellow, colors[1], 1);
-  }
-};
+}
+
 
 var flash = function($color, color, octave){
   $color.classList.add(color.flashClass);
 
-  if (color.flashClass === 'red-flash') {
-    play(220 * octave);
+  switch(color.flashClass) {
+    case 'red-flash':
+      play(220 * octave);
+      break;
+    case 'yellow-flash':
+      play(138.59 * octave);
+      break;
+    case 'green-flash':
+      play(164.81 * octave);
+      break;
+    case 'blue-flash':
+      play(110 * octave);
+      break;
   }
-  if (color.flashClass === 'yellow-flash') {
-    play(138.59 * octave);
-  }
-  if (color.flashClass === 'green-flash') {
-    play(164.81 * octave);
-  }
-  if (color.flashClass === 'blue-flash') {
-    play(110 * octave);
-  }
-
 
   if($color.classList.contains(color.flashClass)) {
     setTimeout(function flashOff() {
