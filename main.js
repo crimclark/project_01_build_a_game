@@ -6,11 +6,15 @@ var $green = document.querySelector('.green');
 var $score = document.querySelector('#score');
 var $startBtn = document.querySelector('#start');
 var winLoseMessage = document.querySelector('#win-lose');
-var speed = 500;
-var gameActive = null;
 var $playback = document.querySelector('#playback');
+var speed = 500;
+var gameActive;
 var buzzerTime;
 var lastSequence = [];
+var userValues = [];
+var colorSequence = [];
+var sequenceLength = 1;
+
 var colors = [
   {
     $color: $blue,
@@ -34,21 +38,38 @@ var colors = [
   }
 ];
 
-var userValues = [];
-var colorSequence = [];
-
-var sequenceLength = 1;
+// var colors = [
+//   {
+//     color: 'blue',
+//     node: $blue,
+//     pitch: 110
+//   },
+//   {
+//     color: 'yellow',
+//     node: $yellow,
+//     pitch: 138.59
+//   },
+//   {
+//     color: 'green',
+//     node: $green,
+//     pitch: 164.81
+//   },
+//   {
+//     color: 'red',
+//     node: $red,
+//     pitch: 220
+//   }
+// ];
 
 var introId = setTimeout(intro, 100);
-
 
 //push user click to userValues array
 var userInput = function(event) {
   // prevents selecting space outside of color and ensures user has clicked start
   if (event.target.className && gameActive) {
     userValues.push(event.target.className);
-    var currentIndex = userValues.length - 1;
-    if (userValues[currentIndex] !== colorSequence[currentIndex]) {
+    var index = userValues.length - 1;
+    if (userValues[index] !== colorSequence[index]) {
       buzzerTime = setTimeout(buzzer, 200);
       winLoseMessage.innerHTML = 'You Lose!';
       $startBtn.addEventListener('click', startSequence);
@@ -60,7 +81,7 @@ var userInput = function(event) {
     // if arrays are the same length
     if (userValues.length === colorSequence.length) {
       //if last values are equal
-      if (userValues[currentIndex] === colorSequence[currentIndex]) {
+      if (userValues[index] === colorSequence[index]) {
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
@@ -80,6 +101,35 @@ var userInput = function(event) {
   }
 };
 
+function findIndex(color) {
+  return colors.findIndex( el => el.color === color );
+}
+
+// var keyInput = function(event) {
+//   if (gameActive) {
+//     let i;
+//     switch(event.keyCode) {
+//       case 38:
+//         event = {target: $green};
+//         i = findIndex('green');
+//         break;
+//       case 39:
+//         event = {target: $red};
+//         i = findIndex('red');
+//         break;
+//       case 40:
+//         event = {target: $blue};
+//         i = findIndex('blue');
+//         break;
+//       case 37:
+//         event = {target: $yellow};
+//         i = findIndex('yellow');
+//         break;
+//     }
+//     userInput(event);
+//     flash(colors[i]);
+//   }
+// }
 
 var keyInput = function(event) {
   if (gameActive) {
@@ -108,10 +158,40 @@ var keyInput = function(event) {
   }
 }
 
-var flash = function($color, color, octave){
-  $color.classList.add(color.flashClass);
+// var flash = function($color, color, octave){
+//   $color.classList.add(color.flashClass);
 
-  switch(color.flashClass) {
+//   switch(color.flashClass) {
+//     case 'red-flash':
+//       play(220 * octave);
+//       break;
+//     case 'yellow-flash':
+//       play(138.59 * octave);
+//       break;
+//     case 'green-flash':
+//       play(164.81 * octave);
+//       break;
+//     case 'blue-flash':
+//       play(110 * octave);
+//       break;
+//   }
+
+//   if($color.classList.contains(color.flashClass)) {
+//     setTimeout(function flashOff() {
+//       $color.classList.remove(color.flashClass);
+//     }, 150);
+//   }
+//   $startBtn.addEventListener('click', startSequence);
+// };
+
+var flash = function($color, color, octave){
+  // pass in entire color object
+  // const { color, pitch, node } = color
+
+  let flashClass = `${color}-flash`;
+  $color.classList.add(flashClass);
+
+  switch(flashClass) {
     case 'red-flash':
       play(220 * octave);
       break;
@@ -126,22 +206,22 @@ var flash = function($color, color, octave){
       break;
   }
 
-  if($color.classList.contains(color.flashClass)) {
-    setTimeout(function flashOff() {
-      $color.classList.remove(color.flashClass);
+  // refactor to pass in entire color object
+  // remove switchstatement and instead
+  // play(color.pitch);
+
+  if($color.classList.contains(flashClass)) {
+    setTimeout( () => {
+      $color.classList.remove(flashClass);
     }, 150);
   }
   $startBtn.addEventListener('click', startSequence);
 };
 
+// if first sequence, start immediately, else delay next turn by 1 sec
 var startSequence = function() {
   $startBtn.removeEventListener('click', startSequence);
-  //if 1st sequence, start immediately, else delay next turn by 1 sec
-  if (sequenceLength === 1) {
-    playSequence();
-  } else {
-    setTimeout(playSequence, 1000);
-  }
+  sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
 };
 
 var enterStart = function(event) {
@@ -177,8 +257,8 @@ function playSequence() {
 }
 
 var getRandomColor = function() {
-    var randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
+  var randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
 };
 
 function clearGame() {
@@ -195,19 +275,31 @@ function clearGame() {
 
 function sounds(event) {
   clearTimeout(buzzerTime);
-  if (event.target.classList.contains('red')) {
+  const { classList } = event.target;
+  if (classList.contains('red')) {
     play(220);
   }
-  if (event.target.classList.contains('yellow')) {
+  if (classList.contains('yellow')) {
     play(138.59);
   }
-  if (event.target.classList.contains('green')) {
+  if (classList.contains('green')) {
     play(164.81);
   }
-  if (event.target.classList.contains('blue')) {
+  if (classList.contains('blue')) {
     play(110);
   }
 }
+
+// function sounds(event) {
+//   clearTimeout(buzzerTime);
+//   const { classList } = event.target;
+//   let i;
+//   if ( classList.contains('red') ) i = findIndex('red');
+//   else if ( classList.contains('yellow') ) i = findIndex('yellow');
+//   else if ( classList.contains('green') ) i = findIndex('green');
+//   else if ( classList.contains('blue') ) i = findIndex('blue');
+//   play(colors[i].pitch);
+// };
 
 /**
   * Plays back last sequence
@@ -238,7 +330,7 @@ function intro() {
   sustain = 0.05;
   release = 0.08;
   var introSequence = setInterval( () => {
-    flash(colors[i].$color, colors[i], 2);
+    flash(colors[i].$color, colors[i].color, 2);
     i++;
     if (i === colors.length) {
       i = 0;
@@ -259,6 +351,34 @@ function intro() {
   }, 75);
 }
 
+// function intro() {
+//   disableActions();
+//   var i = 0;
+//   var loops = 0;
+//   sustain = 0.05;
+//   release = 0.08;
+//   var introSequence = setInterval( () => {
+//     flash(colors[i].$color, colors[i], 2);
+//     i++;
+//     if (i === colors.length) {
+//       i = 0;
+//       loops++;
+//     }
+//     switch(loops) {
+//       case 12:
+//         sustain = 0.1;
+//         release = 0.2;
+//         break;
+//       case 13:
+//         clearInterval(introSequence);
+//         clearTimeout(introId);
+//         window.addEventListener('keydown', enterStart);
+//         $startBtn.removeAttribute('disabled');
+//         break;
+//     }
+//   }, 75);
+// }
+
 function disableActions() {
   $playback.setAttribute('disabled', 'true');
   $startBtn.setAttribute('disabled', 'true');
@@ -278,7 +398,7 @@ var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 var sustain = null;
 var release = null;
 
-function play (pitch) {
+function play(pitch) {
   var oscillator = audioContext.createOscillator();
   var oscFilter = audioContext.createBiquadFilter();
   var input = audioContext.createGain();
