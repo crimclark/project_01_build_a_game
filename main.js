@@ -51,36 +51,38 @@ function gameLost() {
   return gameActive = false;
 }
 
+function gameWon() {
+  $score.innerHTML = sequenceLength;
+  winLoseMessage.innerHTML = 'You win!';
+  $startBtn.innerHTML = 'RETRY';
+  return gameActive = false;
+}
+
+function lengthsAreEqual(userArr, compArr) {
+  return userArr.length === compArr.length;
+}
+
+function nextTurn() {
+  $score.innerHTML = sequenceLength;
+  sequenceLength += 1;
+  colorSequence = [];
+  lastSequence = [];
+  userValues = [];
+  speed -= 20;
+  return startSequence();
+}
+
 //push user click to userValues array
 const userInput = event => {
-    const { className } = event.target;
-  // prevents selecting space outside of color and ensures user has clicked start
-
+  const { className } = event.target;
   if (className && gameActive) {
     userValues.push(className);
     let i = userValues.length - 1;
-    if (userValues[i] !== colorSequence[i]) {
-      return gameLost();
-    }
-    // if arrays are the same length
-    if (userValues.length === colorSequence.length) {
-      //if last values are equal
-      if (userValues[i] === colorSequence[i]) {
-        $score.innerHTML = sequenceLength;
-        if ($score.innerHTML === '20') {
-          winLoseMessage.innerHTML = 'You win!';
-          $startBtn.innerHTML = 'RETRY';
-          return;
-        }
-        sequenceLength += 1;
-        colorSequence = [];
-        lastSequence = [];
-        userValues = [];
-        speed -= 20;
-        startSequence();
-        //set gameActive to false so userInput is not counted until next sequence is complete
-        // gameActive = false;
-      }
+    if ( userValues[i] !== colorSequence[i] ) return gameLost();
+    let equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
+    if ( equalLengths() && sequenceLength === 3 ) return gameWon();
+    else if ( equalLengths() ) {
+      return nextTurn();
     }
   }
 };
