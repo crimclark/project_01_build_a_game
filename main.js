@@ -44,6 +44,30 @@ const soundParams = {
 
 setTimeout(intro, 100);
 
+function intro() {
+  let i = 0;
+  let loops = 0;
+  sustain = 0.05;
+  release = 0.08;
+  const introSequence = setInterval( () => {
+    flash(colors[i], 2);
+    i++;
+    if (i === colors.length) {
+      i = 0;
+      loops++;
+    }
+    switch(loops) {
+      case 12:
+        sustain = 0.1;
+        release = 0.2;
+        break;
+      case 13:
+        clearInterval(introSequence);
+        return addEventListeners();
+    }
+  }, 75);
+}
+
 function gameLost() {
   setTimeout(buzzer, 200);
   winLoseMessage.innerHTML = 'You Lose!';
@@ -208,31 +232,6 @@ function removeEventListeners() {
   $gameBoard.removeEventListener('click', userInput);
   $gameBoard.removeEventListener('click', sounds);
   $playback.removeEventListener('click', playBack);
-}
-
-function intro() {
-  let i = 0;
-  let loops = 0;
-  sustain = 0.05;
-  release = 0.08;
-  const introSequence = setInterval( () => {
-    flash(colors[i], 2);
-    i++;
-    if (i === colors.length) {
-      i = 0;
-      loops++;
-    }
-    switch(loops) {
-      case 12:
-        sustain = 0.1;
-        release = 0.2;
-        break;
-      case 13:
-        clearInterval(introSequence);
-        addEventListeners();
-        break;
-    }
-  }, 75);
 }
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
