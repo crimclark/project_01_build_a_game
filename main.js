@@ -9,7 +9,6 @@ const winLoseMessage = document.querySelector('#win-lose');
 const $playback = document.querySelector('#playback');
 let speed = 500;
 let gameActive;
-let buzzerTime;
 let lastSequence = [];
 let userValues = [];
 let colorSequence = [];
@@ -43,17 +42,17 @@ const soundParams = {
   release: 0.08
 }
 
-const introId = setTimeout(intro, 100);
+setTimeout(intro, 100);
 
 function gameLost() {
-  buzzerTime = setTimeout(buzzer, 200);
+  setTimeout(buzzer, 200);
   winLoseMessage.innerHTML = 'You Lose!';
   return gameActive = false;
 }
 
 function gameWon() {
   $score.innerHTML = sequenceLength;
-  winLoseMessage.innerHTML = 'You win!';
+  winLoseMessage.innerHTML = 'You Win!';
   $startBtn.innerHTML = 'RETRY';
   return gameActive = false;
 }
@@ -72,18 +71,15 @@ function nextTurn() {
   return startSequence();
 }
 
-//push user click to userValues array
 const userInput = event => {
   const { className } = event.target;
+  const equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
   if (className && gameActive) {
     userValues.push(className);
     let i = userValues.length - 1;
     if ( userValues[i] !== colorSequence[i] ) return gameLost();
-    let equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
     if ( equalLengths() && sequenceLength === 3 ) return gameWon();
-    else if ( equalLengths() ) {
-      return nextTurn();
-    }
+    else if ( equalLengths() ) return nextTurn();
   }
 };
 
@@ -129,30 +125,27 @@ function flash(colorObj, octave = 1) {
 
 // if first sequence, start immediately, else delay next turn by 1 sec
 const startSequence = () => {
-  sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
+  return sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
 };
 
 const handleStart = ({ keyCode, type }) => {
   if (keyCode === 13 || type === 'click') {
     initGame();
-    startSequence();
+    return startSequence();
   }
 };
 
-var eventlisteners = 0;
-
 function playSequence() {
   removeEventListeners();
-  var i = 0;
-  var intervalId = setInterval( () => {
-    var randomColor = getRandomColor();
+  let i = 0;
+  const intervalId = setInterval( () => {
+    let randomColor = getRandomColor();
     flash(randomColor);
     i++;
     colorSequence.push(randomColor.color);
     lastSequence.push(randomColor);
     if (i === sequenceLength) {
       addEventListeners();
-      console.log(eventlisteners)
       clearInterval(intervalId);
     }
   }, speed);
@@ -172,12 +165,10 @@ const initGame = () => {
   winLoseMessage.innerHTML = '';
   $score.innerHTML = '';
   $startBtn.innerHTML = 'RESTART';
-  speed = 500;
-  return;
+  return speed = 500;
 }
 
 const sounds = event => {
-  // clearTimeout(buzzerTime);
   const { classList } = event.target;
   let i;
   if ( classList.contains('red') ) i = findIndex('red');
@@ -238,17 +229,16 @@ function intro() {
         break;
       case 13:
         clearInterval(introSequence);
-        clearTimeout(introId);
         addEventListeners();
         break;
     }
   }, 75);
 }
 
-var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-var sustain = null;
-var release = null;
+let sustain = null;
+let release = null;
 
 function play(pitch) {
   var oscillator = audioContext.createOscillator();
