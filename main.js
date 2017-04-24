@@ -149,7 +149,7 @@ const handleStart = ({ keyCode, type }) => {
   }
 };
 
-function playback() {
+function handlePlayback() {
   if (!colorSequence.length) return;
   return previousSequence( intervalId => {
     clearInterval(intervalId);
@@ -212,7 +212,7 @@ function addEventListeners() {
   window.addEventListener('keydown', keyInput);
   $gameBoard.addEventListener('click', userInput);
   $gameBoard.addEventListener('click', sounds);
-  $playback.addEventListener('click', playback);
+  $playback.addEventListener('click', handlePlayback);
 }
 
 function removeEventListeners() {
@@ -221,7 +221,7 @@ function removeEventListeners() {
   window.removeEventListener('keydown', keyInput);
   $gameBoard.removeEventListener('click', userInput);
   $gameBoard.removeEventListener('click', sounds);
-  $playback.removeEventListener('click', playback);
+  $playback.removeEventListener('click', handlePlayback);
 }
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
