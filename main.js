@@ -14,20 +14,6 @@ let userValues = [];
 let colorSequence = [];
 let sequenceLength = 1;
 
-const gameState = {
-  speed: 500,
-  gameActive: false,
-  lastSequence: [],
-  userValues: [],
-  colorSequence: [],
-  sequenceLength: 1
-};
-
-const soundState = {
-  sustain: 0.05,
-  release: 0.08
-}
-
 const colors = [
   {
     color: 'blue',
@@ -243,6 +229,11 @@ function removeEventListeners() {
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
+const soundState = {
+  sustain: 0.05,
+  release: 0.08
+}
+
 function play(pitch) {
   let { sustain, release } = soundState;
   var oscillator = audioContext.createOscillator();
@@ -291,4 +282,5 @@ function buzzer() {
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
+
 
