@@ -102,7 +102,7 @@ const userInput = event => {
     userValues.push(className);
     let i = userValues.length - 1;
     if ( userValues[i] !== colorSequence[i] ) return gameLost();
-    if ( equalLengths() && sequenceLength === 3 ) return gameWon();
+    if ( equalLengths() && sequenceLength === 20 ) return gameWon();
     else if ( equalLengths() ) return nextTurn();
   }
 };
