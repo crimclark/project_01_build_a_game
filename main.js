@@ -15,7 +15,6 @@ let userValues = [];
 let colorSequence = [];
 let sequenceLength = 1;
 
-
 const colors = [
   {
     color: 'blue',
@@ -51,7 +50,6 @@ const userInput = event => {
   // prevents selecting space outside of color and ensures user has clicked start
   if (event.target.className && gameActive) {
     userValues.push(event.target.className);
-    // console.log(userValues)
     var index = userValues.length - 1;
     if (userValues[index] !== colorSequence[index]) {
       buzzerTime = setTimeout(buzzer, 200);
@@ -138,7 +136,6 @@ var eventlisteners = 0;
 
 function playSequence() {
   removeEventListeners();
-  // gameActive = false;
   var i = 0;
   var intervalId = setInterval( () => {
     var randomColor = getRandomColor();
@@ -150,7 +147,6 @@ function playSequence() {
       addEventListeners();
       console.log(eventlisteners)
       clearInterval(intervalId);
-      // gameActive = true;
     }
   }, speed);
 }
