@@ -45,22 +45,27 @@ const soundParams = {
 
 const introId = setTimeout(intro, 100);
 
+function gameLost() {
+  buzzerTime = setTimeout(buzzer, 200);
+  winLoseMessage.innerHTML = 'You Lose!';
+  return gameActive = false;
+}
+
 //push user click to userValues array
 const userInput = event => {
+    const { className } = event.target;
   // prevents selecting space outside of color and ensures user has clicked start
-  if (event.target.className && gameActive) {
-    userValues.push(event.target.className);
-    var index = userValues.length - 1;
-    if (userValues[index] !== colorSequence[index]) {
-      buzzerTime = setTimeout(buzzer, 200);
-      winLoseMessage.innerHTML = 'You Lose!';
-      gameActive = false;
-      return;
+
+  if (className && gameActive) {
+    userValues.push(className);
+    let i = userValues.length - 1;
+    if (userValues[i] !== colorSequence[i]) {
+      return gameLost();
     }
     // if arrays are the same length
     if (userValues.length === colorSequence.length) {
       //if last values are equal
-      if (userValues[index] === colorSequence[index]) {
+      if (userValues[i] === colorSequence[i]) {
         $score.innerHTML = sequenceLength;
         if ($score.innerHTML === '20') {
           winLoseMessage.innerHTML = 'You win!';
