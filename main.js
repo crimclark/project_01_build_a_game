@@ -14,6 +14,20 @@ let userValues = [];
 let colorSequence = [];
 let sequenceLength = 1;
 
+const gameState = {
+  speed: 500,
+  gameActive: false,
+  lastSequence: [],
+  userValues: [],
+  colorSequence: [],
+  sequenceLength: 1
+};
+
+const soundState = {
+  sustain: 0.05,
+  release: 0.08
+}
+
 const colors = [
   {
     color: 'blue',
@@ -37,18 +51,11 @@ const colors = [
   }
 ];
 
-const soundParams = {
-  sustain: 0.05,
-  release: 0.08
-}
-
 setTimeout(intro, 100);
 
 function intro() {
   let i = 0;
   let loops = 0;
-  sustain = 0.05;
-  release = 0.08;
   const introSequence = setInterval( () => {
     flash(colors[i], 2);
     i++;
@@ -58,8 +65,8 @@ function intro() {
     }
     switch(loops) {
       case 12:
-        sustain = 0.1;
-        release = 0.2;
+        soundState.sustain = 0.1;
+        soundState.release = 0.2;
         break;
       case 13:
         clearInterval(introSequence);
@@ -95,7 +102,7 @@ function nextTurn() {
   return startSequence();
 }
 
-const userInput = event => {
+function userInput(event) {
   const { className } = event.target;
   const equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
   if (className && gameActive) {
@@ -111,7 +118,7 @@ function findIndex(color) {
   return colors.findIndex( el => el.color === color );
 }
 
-const keyInput = event => {
+function keyInput(event) {
   let i;
   switch(event.keyCode) {
     case 38:
@@ -148,7 +155,7 @@ function flash(colorObj, octave = 1) {
 };
 
 // if first sequence, start immediately, else delay next turn by 1 sec
-const startSequence = () => {
+function startSequence() {
   return sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
 };
 
@@ -180,7 +187,7 @@ function getRandomColor() {
   return colors[randomIndex];
 };
 
-const initGame = () => {
+function initGame() {
   gameActive = true;
   lastSequence = [];
   sequenceLength = 1;
@@ -192,7 +199,7 @@ const initGame = () => {
   return speed = 500;
 }
 
-const sounds = event => {
+function sounds(event) {
   const { classList } = event.target;
   let i;
   if ( classList.contains('red') ) i = findIndex('red');
@@ -202,7 +209,7 @@ const sounds = event => {
   if (i >= 0) play(colors[i].pitch);
 };
 
-const playBack = event => {
+function playBack(event) {
   if (!lastSequence.length) return;
   removeEventListeners();
   let i = 0;
@@ -236,10 +243,8 @@ function removeEventListeners() {
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-let sustain = null;
-let release = null;
-
 function play(pitch) {
+  let { sustain, release } = soundState;
   var oscillator = audioContext.createOscillator();
   var oscFilter = audioContext.createBiquadFilter();
   var input = audioContext.createGain();
