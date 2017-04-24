@@ -9,7 +9,6 @@ const winLoseMessage = document.querySelector('#win-lose');
 const $playback = document.querySelector('#playback');
 let speed = 500;
 let gameActive;
-let lastSequence = [];
 let userValues = [];
 let colorSequence = [];
 let sequenceLength = 1;
@@ -81,8 +80,6 @@ function lengthsAreEqual(userArr, compArr) {
 function nextTurn() {
   $score.innerHTML = sequenceLength;
   sequenceLength += 1;
-  colorSequence = [];
-  lastSequence = [];
   userValues = [];
   speed -= 20;
   return startSequence();
@@ -142,7 +139,7 @@ function flash(colorObj, octave = 1) {
 
 // if first sequence, start immediately, else delay next turn by 1 sec
 function startSequence() {
-  return sequenceLength === 1 ? playSequence() : setTimeout(playSequence, 1000);
+  return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
 };
 
 const handleStart = ({ keyCode, type }) => {
@@ -152,21 +149,36 @@ const handleStart = ({ keyCode, type }) => {
   }
 };
 
-function playSequence() {
+function playback() {
+  if (!colorSequence.length) return;
+  return previousSequence( intervalId => {
+    clearInterval(intervalId);
+  })
+}
+
+function incrementSequence() {
+  previousSequence( intervalId => {
+    let randomColor = getRandomColor();
+    flash(randomColor);
+    clearInterval(intervalId);
+    return colorSequence.push(randomColor.color);
+  })
+}
+
+function previousSequence(callback) {
   removeEventListeners();
   let i = 0;
   const intervalId = setInterval( () => {
-    let randomColor = getRandomColor();
-    flash(randomColor);
-    i++;
-    colorSequence.push(randomColor.color);
-    lastSequence.push(randomColor);
-    if (i === sequenceLength) {
-      addEventListeners();
-      clearInterval(intervalId);
+    if (i !== colorSequence.length) {
+      let colorIndex = findIndex(colorSequence[i]);
+      flash(colors[colorIndex]);
+      i++;
+    } else {
+        callback(intervalId);
+        addEventListeners();
     }
   }, speed);
-}
+};
 
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
@@ -175,7 +187,6 @@ function getRandomColor() {
 
 function initGame() {
   gameActive = true;
-  lastSequence = [];
   sequenceLength = 1;
   userValues = [];
   colorSequence = [];
@@ -195,27 +206,13 @@ function sounds(event) {
   if (i >= 0) play(colors[i].pitch);
 };
 
-function playBack(event) {
-  if (!lastSequence.length) return;
-  removeEventListeners();
-  let i = 0;
-  const playBackInterval = setInterval( () => {
-    flash(lastSequence[i]);
-    i++;
-    if (i === lastSequence.length) {
-      addEventListeners();
-      clearInterval(playBackInterval);
-    }
-  }, speed);
-}
-
 function addEventListeners() {
   window.addEventListener('keydown', handleStart);
   $startBtn.addEventListener('click', handleStart);
   window.addEventListener('keydown', keyInput);
   $gameBoard.addEventListener('click', userInput);
   $gameBoard.addEventListener('click', sounds);
-  $playback.addEventListener('click', playBack);
+  $playback.addEventListener('click', playback);
 }
 
 function removeEventListeners() {
@@ -224,7 +221,7 @@ function removeEventListeners() {
   window.removeEventListener('keydown', keyInput);
   $gameBoard.removeEventListener('click', userInput);
   $gameBoard.removeEventListener('click', sounds);
-  $playback.removeEventListener('click', playBack);
+  $playback.removeEventListener('click', playback);
 }
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
