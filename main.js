@@ -1,5 +1,13 @@
 'use strict';
 
+var _stuff = require('./stuff');
+
+var _stuff2 = _interopRequireDefault(_stuff);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log(_stuff2.default);
+
 var $gameBoard = document.querySelector('#container');
 var $red = document.querySelector('.red');
 var $blue = document.querySelector('.blue');
