@@ -132,9 +132,9 @@ button {
   border-radius: 100% 0 0 0;
 }
 
-.green:active {
+/*.green:active {
   background-color: #10ff00;
-}
+}*/
 
 .red {
   background-color: #8e4040;
@@ -142,9 +142,9 @@ button {
   box-shadow: inset 5px 5px 5px 10px #7c0000;
 }
 
-.red:active {
+/*.red:active {
   background-color:red;
-}
+}*/
 
 .red-flash {
   background-color:red;
@@ -162,9 +162,9 @@ button {
   border-radius: 0 0 100% 0;
 }
 
-.blue:active {
+/*.blue:active {
   background-color: #2b63ff;
-}
+}*/
 
 .yellow {
   background-color: #bbbb5b;
@@ -177,9 +177,9 @@ button {
   border-radius: 0 0 0 100%;
 }
 
-.yellow:active {
+/*.yellow:active {
   background-color:yellow;
-}
+}*/
 
 .top {
   margin: 0 auto;
