@@ -86,46 +86,19 @@ function nextTurn() {
   return startSequence();
 }
 
-function userInput(event) {
-  const { className } = event.target;
+function userInput({ color }) {
   const equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
-  if (className && gameActive) {
-    userValues.push(className);
+  if (gameActive) {
+    userValues.push(color);
     let i = userValues.length - 1;
     if ( userValues[i] !== colorSequence[i] ) return gameLost();
-    if ( equalLengths() && sequenceLength === 20 ) return gameWon();
+    else if ( equalLengths() && sequenceLength === 20 ) return gameWon();
     else if ( equalLengths() ) return nextTurn();
   }
-};
+}
 
 function findIndex(color) {
   return colors.findIndex( el => el.color === color );
-}
-
-function keyInput(event) {
-  let i;
-  switch(event.keyCode) {
-    case 38:
-      event = {target: $green};
-      i = findIndex('green');
-      break;
-    case 39:
-      event = {target: $red};
-      i = findIndex('red');
-      break;
-    case 40:
-      event = {target: $blue};
-      i = findIndex('blue');
-      break;
-    case 37:
-      event = {target: $yellow};
-      i = findIndex('yellow');
-      break;
-    default:
-      return;
-  }
-  userInput(event);
-  flash(colors[i]);
 }
 
 function flash(colorObj, octave = 1) {
@@ -136,12 +109,12 @@ function flash(colorObj, octave = 1) {
   setTimeout( () => {
     node.classList.remove(flashClass);
   }, 150);
-};
+}
 
 // if first sequence, start immediately, else delay next turn by 1 sec
 function startSequence() {
   return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
-};
+}
 
 const handleStart = ({ keyCode, type }) => {
   if (keyCode === 13 || type === 'click') {
@@ -154,8 +127,8 @@ function handlePlayback() {
   if (!colorSequence.length) return;
   return previousSequence( intervalId => {
     clearInterval(intervalId);
-  })
-};
+  });
+}
 
 function incrementSequence() {
   previousSequence( intervalId => {
@@ -163,8 +136,8 @@ function incrementSequence() {
     flash(randomColor);
     clearInterval(intervalId);
     return colorSequence.push(randomColor.color);
-  })
-};
+  });
+}
 
 function previousSequence(callback) {
   removeEventListeners();
@@ -179,12 +152,12 @@ function previousSequence(callback) {
         addEventListeners();
     }
   }, speed);
-};
+}
 
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
-};
+}
 
 function initGame() {
   gameActive = true;
@@ -197,35 +170,48 @@ function initGame() {
   return speed = 500;
 }
 
-function sounds(event) {
+function containsClass(classList, className) {
+  return classList.contains(className);
+}
+
+function getColor(event) {
+  const { keyCode } = event;
   const { classList } = event.target;
   let i;
-  if ( classList.contains('red') ) i = findIndex('red');
-  else if ( classList.contains('yellow') ) i = findIndex('yellow');
-  else if ( classList.contains('green') ) i = findIndex('green');
-  else if ( classList.contains('blue') ) i = findIndex('blue');
-  if (i >= 0) play(colors[i].pitch);
-};
+  const containsColor = containsClass.bind(null, classList);
+  if ( keyCode === 37 || containsColor('yellow') ) i = findIndex('yellow');
+  else if ( keyCode === 38 || containsColor('green') ) i = findIndex('green');
+  else if ( keyCode === 39 || containsColor('red') ) i = findIndex('red');
+  else if ( keyCode === 40 || containsColor('blue') ) i = findIndex('blue');
+  if (i > -1) return colors[i];
+}
+
+function handleMouseOrKey(event) {
+  const color = getColor(event);
+  if (color && gameActive) {
+    userInput(color);
+    flash(color);
+  }
+  else if (color) flash(color);
+}
 
 window.addEventListener('keydown', event => {
   if ([37, 38, 39, 40].indexOf(event.keyCode) > -1) event.preventDefault();
-})
+});
 
 function addEventListeners() {
   window.addEventListener('keydown', handleStart);
   $startBtn.addEventListener('click', handleStart);
-  window.addEventListener('keydown', keyInput);
-  $gameBoard.addEventListener('click', userInput);
-  $gameBoard.addEventListener('click', sounds);
+  $gameBoard.addEventListener('mousedown', handleMouseOrKey);
+  window.addEventListener('keydown', handleMouseOrKey);
   $playback.addEventListener('click', handlePlayback);
 }
 
 function removeEventListeners() {
   window.removeEventListener('keydown', handleStart);
   $startBtn.removeEventListener('click', handleStart);
-  window.removeEventListener('keydown', keyInput);
-  $gameBoard.removeEventListener('click', userInput);
-  $gameBoard.removeEventListener('click', sounds);
+  $gameBoard.removeEventListener('mousedown', handleMouseOrKey);
+  window.removeEventListener('keydown', handleMouseOrKey);
   $playback.removeEventListener('click', handlePlayback);
 }
 
@@ -284,5 +270,3 @@ function buzzer() {
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
-
-
