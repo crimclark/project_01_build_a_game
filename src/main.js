@@ -207,6 +207,10 @@ function sounds(event) {
   if (i >= 0) play(colors[i].pitch);
 };
 
+window.addEventListener('keydown', event => {
+  if ([37, 38, 39, 40].indexOf(event.keyCode) > -1) event.preventDefault();
+})
+
 function addEventListeners() {
   window.addEventListener('keydown', handleStart);
   $startBtn.addEventListener('click', handleStart);
