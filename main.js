@@ -1,13 +1,5 @@
 'use strict';
 
-var _stuff = require('./stuff');
-
-var _stuff2 = _interopRequireDefault(_stuff);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-console.log(_stuff2.default);
-
 var $gameBoard = document.querySelector('#container');
 var $red = document.querySelector('.red');
 var $blue = document.querySelector('.blue');
@@ -91,48 +83,21 @@ function nextTurn() {
   return startSequence();
 }
 
-function userInput(event) {
-  var className = event.target.className;
+function userInput(_ref) {
+  var color = _ref.color;
 
   var equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
-  if (className && gameActive) {
-    userValues.push(className);
+  if (gameActive) {
+    userValues.push(color);
     var i = userValues.length - 1;
-    if (userValues[i] !== colorSequence[i]) return gameLost();
-    if (equalLengths() && sequenceLength === 20) return gameWon();else if (equalLengths()) return nextTurn();
+    if (userValues[i] !== colorSequence[i]) return gameLost();else if (equalLengths() && sequenceLength === 20) return gameWon();else if (equalLengths()) return nextTurn();
   }
-};
+}
 
 function findIndex(color) {
   return colors.findIndex(function (el) {
     return el.color === color;
   });
-}
-
-function keyInput(event) {
-  var i = void 0;
-  switch (event.keyCode) {
-    case 38:
-      event = { target: $green };
-      i = findIndex('green');
-      break;
-    case 39:
-      event = { target: $red };
-      i = findIndex('red');
-      break;
-    case 40:
-      event = { target: $blue };
-      i = findIndex('blue');
-      break;
-    case 37:
-      event = { target: $yellow };
-      i = findIndex('yellow');
-      break;
-    default:
-      return;
-  }
-  userInput(event);
-  flash(colors[i]);
 }
 
 function flash(colorObj) {
@@ -147,16 +112,16 @@ function flash(colorObj) {
   setTimeout(function () {
     node.classList.remove(flashClass);
   }, 150);
-};
+}
 
 // if first sequence, start immediately, else delay next turn by 1 sec
 function startSequence() {
   return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
-};
+}
 
-var handleStart = function handleStart(_ref) {
-  var keyCode = _ref.keyCode,
-      type = _ref.type;
+var handleStart = function handleStart(_ref2) {
+  var keyCode = _ref2.keyCode,
+      type = _ref2.type;
 
   if (keyCode === 13 || type === 'click') {
     initGame();
@@ -169,7 +134,7 @@ function handlePlayback() {
   return previousSequence(function (intervalId) {
     clearInterval(intervalId);
   });
-};
+}
 
 function incrementSequence() {
   previousSequence(function (intervalId) {
@@ -178,7 +143,7 @@ function incrementSequence() {
     clearInterval(intervalId);
     return colorSequence.push(randomColor.color);
   });
-};
+}
 
 function previousSequence(callback) {
   removeEventListeners();
@@ -193,12 +158,12 @@ function previousSequence(callback) {
       addEventListeners();
     }
   }, speed);
-};
+}
 
 function getRandomColor() {
   var randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
-};
+}
 
 function initGame() {
   gameActive = true;
@@ -211,29 +176,45 @@ function initGame() {
   return speed = 500;
 }
 
-function sounds(event) {
+function containsClass(classList, className) {
+  return classList.contains(className);
+}
+
+function getColor(event) {
+  var keyCode = event.keyCode;
   var classList = event.target.classList;
 
   var i = void 0;
-  if (classList.contains('red')) i = findIndex('red');else if (classList.contains('yellow')) i = findIndex('yellow');else if (classList.contains('green')) i = findIndex('green');else if (classList.contains('blue')) i = findIndex('blue');
-  if (i >= 0) play(colors[i].pitch);
-};
+  var containsColor = containsClass.bind(null, classList);
+  if (keyCode === 37 || containsColor('yellow')) i = findIndex('yellow');else if (keyCode === 38 || containsColor('green')) i = findIndex('green');else if (keyCode === 39 || containsColor('red')) i = findIndex('red');else if (keyCode === 40 || containsColor('blue')) i = findIndex('blue');
+  if (i > -1) return colors[i];
+}
+
+function handleMouseOrKey(event) {
+  var color = getColor(event);
+  if (color && gameActive) {
+    userInput(color);
+    flash(color);
+  } else if (color) flash(color);
+}
+
+window.addEventListener('keydown', function (event) {
+  if ([37, 38, 39, 40].indexOf(event.keyCode) > -1) event.preventDefault();
+});
 
 function addEventListeners() {
   window.addEventListener('keydown', handleStart);
   $startBtn.addEventListener('click', handleStart);
-  window.addEventListener('keydown', keyInput);
-  $gameBoard.addEventListener('click', userInput);
-  $gameBoard.addEventListener('click', sounds);
+  $gameBoard.addEventListener('mousedown', handleMouseOrKey);
+  window.addEventListener('keydown', handleMouseOrKey);
   $playback.addEventListener('click', handlePlayback);
 }
 
 function removeEventListeners() {
   window.removeEventListener('keydown', handleStart);
   $startBtn.removeEventListener('click', handleStart);
-  window.removeEventListener('keydown', keyInput);
-  $gameBoard.removeEventListener('click', userInput);
-  $gameBoard.removeEventListener('click', sounds);
+  $gameBoard.removeEventListener('mousedown', handleMouseOrKey);
+  window.removeEventListener('keydown', handleMouseOrKey);
   $playback.removeEventListener('click', handlePlayback);
 }
 
