@@ -1,54 +1,52 @@
-const $gameBoard = document.querySelector('#container');
-const $red = document.querySelector('.red');
-const $blue = document.querySelector('.blue');
-const $yellow = document.querySelector('.yellow');
-const $green = document.querySelector('.green');
-const $score = document.querySelector('#score');
-const $startBtn = document.querySelector('#start');
-const winLoseMessage = document.querySelector('#win-lose');
-const $playback = document.querySelector('#playback');
-let speed = 500;
-let gameActive;
-let userValues = [];
-let colorSequence = [];
-let sequenceLength = 1;
+'use strict';
 
-const colors = [
-  {
-    color: 'blue',
-    node: $blue,
-    pitch: 110
-  },
-  {
-    color: 'yellow',
-    node: $yellow,
-    pitch: 138.59
-  },
-  {
-    color: 'green',
-    node: $green,
-    pitch: 164.81
-  },
-  {
-    color: 'red',
-    node: $red,
-    pitch: 220
-  }
-];
+var $gameBoard = document.querySelector('#container');
+var $red = document.querySelector('.red');
+var $blue = document.querySelector('.blue');
+var $yellow = document.querySelector('.yellow');
+var $green = document.querySelector('.green');
+var $score = document.querySelector('#score');
+var $startBtn = document.querySelector('#start');
+var winLoseMessage = document.querySelector('#win-lose');
+var $playback = document.querySelector('#playback');
+
+var speed = 500;
+var gameActive = void 0;
+var userValues = [];
+var colorSequence = [];
+var sequenceLength = 1;
+
+var colors = [{
+  color: 'blue',
+  node: $blue,
+  pitch: 110
+}, {
+  color: 'yellow',
+  node: $yellow,
+  pitch: 138.59
+}, {
+  color: 'green',
+  node: $green,
+  pitch: 164.81
+}, {
+  color: 'red',
+  node: $red,
+  pitch: 220
+}];
 
 setTimeout(intro, 100);
 
 function intro() {
-  let i = 0;
-  let loops = 0;
-  const introSequence = setInterval( () => {
+  var i = 0;
+  var loops = 0;
+  var introSequence = setInterval(function () {
     flash(colors[i], 2);
     i++;
     if (i === colors.length) {
       i = 0;
       loops++;
     }
-    switch(loops) {
+    switch (loops) {
       case 12:
         soundState.sustain = 0.1;
         soundState.release = 0.2;
@@ -86,38 +84,40 @@ function nextTurn() {
 }
 
 function userInput(event) {
-  const { className } = event.target;
-  const equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
+  var className = event.target.className;
+
+  var equalLengths = lengthsAreEqual.bind(null, userValues, colorSequence);
   if (className && gameActive) {
     userValues.push(className);
-    let i = userValues.length - 1;
-    if ( userValues[i] !== colorSequence[i] ) return gameLost();
-    if ( equalLengths() && sequenceLength === 20 ) return gameWon();
-    else if ( equalLengths() ) return nextTurn();
+    var i = userValues.length - 1;
+    if (userValues[i] !== colorSequence[i]) return gameLost();
+    if (equalLengths() && sequenceLength === 20) return gameWon();else if (equalLengths()) return nextTurn();
   }
 };
 
 function findIndex(color) {
-  return colors.findIndex( el => el.color === color );
+  return colors.findIndex(function (el) {
+    return el.color === color;
+  });
 }
 
 function keyInput(event) {
-  let i;
-  switch(event.keyCode) {
+  var i = void 0;
+  switch (event.keyCode) {
     case 38:
-      event = {target: $green};
+      event = { target: $green };
       i = findIndex('green');
       break;
     case 39:
-      event = {target: $red};
+      event = { target: $red };
       i = findIndex('red');
       break;
     case 40:
-      event = {target: $blue};
+      event = { target: $blue };
       i = findIndex('blue');
       break;
     case 37:
-      event = {target: $yellow};
+      event = { target: $yellow };
       i = findIndex('yellow');
       break;
     default:
@@ -127,12 +127,16 @@ function keyInput(event) {
   flash(colors[i]);
 }
 
-function flash(colorObj, octave = 1) {
-  const { color, pitch, node } = colorObj;
-  let flashClass = `${color}-flash`;
+function flash(colorObj) {
+  var octave = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var color = colorObj.color,
+      pitch = colorObj.pitch,
+      node = colorObj.node;
+
+  var flashClass = color + '-flash';
   node.classList.add(flashClass);
   play(pitch * octave);
-  setTimeout( () => {
+  setTimeout(function () {
     node.classList.remove(flashClass);
   }, 150);
 };
@@ -142,7 +146,10 @@ function startSequence() {
   return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
 };
 
-const handleStart = ({ keyCode, type }) => {
+var handleStart = function handleStart(_ref) {
+  var keyCode = _ref.keyCode,
+      type = _ref.type;
+
   if (keyCode === 13 || type === 'click') {
     initGame();
     return startSequence();
@@ -151,37 +158,37 @@ const handleStart = ({ keyCode, type }) => {
 
 function handlePlayback() {
   if (!colorSequence.length) return;
-  return previousSequence( intervalId => {
+  return previousSequence(function (intervalId) {
     clearInterval(intervalId);
-  })
-}
+  });
+};
 
 function incrementSequence() {
-  previousSequence( intervalId => {
-    let randomColor = getRandomColor();
+  previousSequence(function (intervalId) {
+    var randomColor = getRandomColor();
     flash(randomColor);
     clearInterval(intervalId);
     return colorSequence.push(randomColor.color);
-  })
-}
+  });
+};
 
 function previousSequence(callback) {
   removeEventListeners();
-  let i = 0;
-  const intervalId = setInterval( () => {
+  var i = 0;
+  var intervalId = setInterval(function () {
     if (i !== colorSequence.length) {
-      let colorIndex = findIndex(colorSequence[i]);
+      var colorIndex = findIndex(colorSequence[i]);
       flash(colors[colorIndex]);
       i++;
     } else {
-        callback(intervalId);
-        addEventListeners();
+      callback(intervalId);
+      addEventListeners();
     }
   }, speed);
 };
 
 function getRandomColor() {
-  const randomIndex = Math.floor(Math.random() * colors.length);
+  var randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 };
 
@@ -197,12 +204,10 @@ function initGame() {
 }
 
 function sounds(event) {
-  const { classList } = event.target;
-  let i;
-  if ( classList.contains('red') ) i = findIndex('red');
-  else if ( classList.contains('yellow') ) i = findIndex('yellow');
-  else if ( classList.contains('green') ) i = findIndex('green');
-  else if ( classList.contains('blue') ) i = findIndex('blue');
+  var classList = event.target.classList;
+
+  var i = void 0;
+  if (classList.contains('red')) i = findIndex('red');else if (classList.contains('yellow')) i = findIndex('yellow');else if (classList.contains('green')) i = findIndex('green');else if (classList.contains('blue')) i = findIndex('blue');
   if (i >= 0) play(colors[i].pitch);
 };
 
@@ -224,15 +229,17 @@ function removeEventListeners() {
   $playback.removeEventListener('click', handlePlayback);
 }
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-const soundState = {
+var soundState = {
   sustain: 0.05,
   release: 0.08
-}
+};
 
 function play(pitch) {
-  let { sustain, release } = soundState;
+  var sustain = soundState.sustain,
+      release = soundState.release;
+
   var oscillator = audioContext.createOscillator();
   var oscFilter = audioContext.createBiquadFilter();
   var input = audioContext.createGain();
@@ -279,5 +286,3 @@ function buzzer() {
   oscillator.start(startTime);
   oscillator.stop(endTime + 1);
 }
-
-
