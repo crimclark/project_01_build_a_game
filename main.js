@@ -76,11 +76,12 @@ function lengthsAreEqual(userArr, compArr) {
 }
 
 function nextTurn() {
+  removeEventListeners();
   $score.innerHTML = sequenceLength;
   sequenceLength += 1;
   userValues = [];
   speed -= 20;
-  return startSequence();
+  return setTimeout(incrementSequence, 1000);
 }
 
 function userInput(_ref) {
@@ -114,9 +115,9 @@ function flash(colorObj) {
   }, 150);
 }
 
-// if first sequence, start immediately, else delay next turn by 1 sec
-function startSequence() {
-  return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
+function handlePlayback() {
+  if (!colorSequence.length) return;
+  return previousSequence();
 }
 
 var handleStart = function handleStart(_ref2) {
@@ -125,27 +126,19 @@ var handleStart = function handleStart(_ref2) {
 
   if (keyCode === 13 || type === 'click') {
     initGame();
-    return startSequence();
+    return incrementSequence();
   }
 };
 
-function handlePlayback() {
-  if (!colorSequence.length) return;
-  return previousSequence(function (intervalId) {
-    clearInterval(intervalId);
-  });
-}
-
 function incrementSequence() {
-  previousSequence(function (intervalId) {
+  previousSequence(function () {
     var randomColor = getRandomColor();
     flash(randomColor);
-    clearInterval(intervalId);
     return colorSequence.push(randomColor.color);
   });
 }
 
-function previousSequence(callback) {
+function previousSequence(increment) {
   removeEventListeners();
   var i = 0;
   var intervalId = setInterval(function () {
@@ -154,7 +147,8 @@ function previousSequence(callback) {
       flash(colors[colorIndex]);
       i++;
     } else {
-      callback(intervalId);
+      if (increment) increment();
+      clearInterval(intervalId);
       addEventListeners();
     }
   }, speed);
