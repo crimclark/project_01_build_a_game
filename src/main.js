@@ -84,7 +84,7 @@ function nextTurn() {
   sequenceLength += 1;
   userValues = [];
   speed -= 20;
-  return startSequence();
+  return setTimeout(incrementSequence, 1000);
 }
 
 function userInput({ color }) {
@@ -112,21 +112,17 @@ function flash(colorObj, octave = 1) {
   }, 150);
 }
 
-function startSequence() {
-  return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
+function handlePlayback() {
+  if (!colorSequence.length) return;
+  return previousSequence();
 }
 
 const handleStart = ({ keyCode, type }) => {
   if (keyCode === 13 || type === 'click') {
     initGame();
-    return startSequence();
+    return incrementSequence();
   }
 };
-
-function handlePlayback() {
-  if (!colorSequence.length) return;
-  return previousSequence();
-}
 
 function incrementSequence() {
   previousSequence( () => {
