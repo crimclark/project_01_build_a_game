@@ -79,6 +79,7 @@ function lengthsAreEqual(userArr, compArr) {
 }
 
 function nextTurn() {
+  removeEventListeners();
   $score.innerHTML = sequenceLength;
   sequenceLength += 1;
   userValues = [];
@@ -111,7 +112,6 @@ function flash(colorObj, octave = 1) {
   }, 150);
 }
 
-// if first sequence, start immediately, else delay next turn by 1 sec
 function startSequence() {
   return sequenceLength === 1 ? incrementSequence() : setTimeout(incrementSequence, 1000);
 }
@@ -125,21 +125,18 @@ const handleStart = ({ keyCode, type }) => {
 
 function handlePlayback() {
   if (!colorSequence.length) return;
-  return previousSequence( intervalId => {
-    clearInterval(intervalId);
-  });
+  return previousSequence();
 }
 
 function incrementSequence() {
-  previousSequence( intervalId => {
+  previousSequence( () => {
     const randomColor = getRandomColor();
     flash(randomColor);
-    clearInterval(intervalId);
     return colorSequence.push(randomColor.color);
   });
 }
 
-function previousSequence(callback) {
+function previousSequence(increment) {
   removeEventListeners();
   let i = 0;
   const intervalId = setInterval( () => {
@@ -148,7 +145,8 @@ function previousSequence(callback) {
       flash(colors[colorIndex]);
       i++;
     } else {
-        callback(intervalId);
+        if (increment) increment();
+        clearInterval(intervalId);
         addEventListeners();
     }
   }, speed);
